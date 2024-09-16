@@ -193,6 +193,7 @@ end
 --local FoundRoom = SearchForRoom()
 
 while task.wait(1) do
-    local board = TicTacToe.uiToBoard("Tic Tac Toe");
-
+    local board = TicTacToe.uiToBoard("Tic Tac Toe")
+    local bestMove = TicTacToe.bestMove(board.board, board.teamColor)
+    print(bestMove)
 end
