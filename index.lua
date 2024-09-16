@@ -50,13 +50,14 @@ function TicTacToe.checkWin(board, player)
     return nil
 end
 
-function TicTacToe.bestMove(board)
-    local winMove = TicTacToe.checkWin(board, "X")
+function TicTacToe.bestMove(board, player)
+    local winMove = TicTacToe.checkWin(board, player)
     if winMove then
         return winMove
     end
 
-    local blockMove = TicTacToe.checkWin(board, "0")
+    local opponent = player == "X" and "O" or "X"
+    local blockMove = TicTacToe.checkWin(board, opponent)
     if blockMove then
         return blockMove
     end
@@ -69,13 +70,14 @@ function TicTacToe.bestMove(board)
         end
     end
 
-    return nil 
+    return nil
 end
+
 
 function getIndexFromName(name)
     local row = tonumber(string.sub(name, 1, 1))
     local col = 4 - tonumber(string.sub(name, 2, 2))
-    return (row - 1) * 3 + col
+    return (col - 1) * 3 + row
 end
 
 function TicTacToe.uiToBoard(name)
@@ -103,17 +105,15 @@ function TicTacToe.uiToBoard(name)
         local color = obj.BrickColor
 
         local symbol
-        if color == BrickColor["Steel Blue"] then
+        if color == BrickColor.new("Steel blue") then
             symbol = "X"
-        elseif color == BrickColor.Persimmon then
+        elseif color == BrickColor.new("Persimmon") then
             symbol = "O"
         end
 
         local index = getIndexFromName(name)
         board[index] = symbol
     end
-
-    print(board)
 
     return { ["board"] = board, ["teamColor"] = teamColor } 
 end
@@ -191,4 +191,8 @@ function SearchForRoom()
 end
 
 --local FoundRoom = SearchForRoom()
-TicTacToe.uiToBoard("Tic Tac Toe")
+
+while task.wait(1) do
+    local board = TicTacToe.uiToBoard("Tic Tac Toe");
+
+end
