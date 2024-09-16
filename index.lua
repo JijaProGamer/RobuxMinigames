@@ -136,10 +136,6 @@ function TicTacToe.uiToBoard(name)
 end
 
 function TicTacToe.doMove(name, move)
-    if not boardUI:FindFirstChild("Bottom Middle") then
-        return
-    end
-    
     local boardUI
 
     if name == "Tic Tac Toe" then
@@ -147,6 +143,11 @@ function TicTacToe.doMove(name, move)
     else 
         boardUI = PlayerGui.RushTicTacToe
     end
+
+    if not boardUI:FindFirstChild("Bottom Middle") then
+        return
+    end
+
 
     local buttons = getChildrenOfClass(boardUI["Bottom Middle"].Buttons, "TextButton")
     if not buttons[move] then
