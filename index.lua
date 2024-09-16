@@ -8,7 +8,13 @@ local PlayButton = LobbyMain["Bottom Middle"].Start
 local RoomsParentFrame = PlayerGui.ViewRooms["Middle Middle"].ViewRooms
 local RoomsFrame = RoomsParentFrame.Background.PlayerList.Objects
 
-local function getChildrenOfClass(parent, className)
+function PressButton(button)
+    for _, connection in pairs(getconnections(button.MouseButton1Click)) do
+        connection:Fire()
+    end
+end
+
+function getChildrenOfClass(parent, className)
     local childrenOfClass = {}
     for _, child in ipairs(parent:GetChildren()) do
         if child:IsA(className) then
@@ -137,9 +143,7 @@ function TicTacToe.doMove(move)
     end
 
     local buttons = getChildrenOfClass(boardUI["Bottom Middle Template"].Buttons, "TextButton")
-    print(#buttons)
-
-
+    PressButton(buttons[move])
 end
 
 function GetRooms()
@@ -169,12 +173,6 @@ function GetRooms()
     end
 
     return Rooms
-end
-
-function PressButton(button)
-    for _, connection in pairs(getconnections(button.MouseButton1Click)) do
-        connection:Fire()
-    end
 end
 
 function PressRoomsButton()
