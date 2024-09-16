@@ -144,8 +144,11 @@ function TicTacToe.doMove(move)
         boardUI = PlayerGui.RushTicTacToe
     end
 
-    local buttons = getChildrenOfClass(boardUI["Bottom Middle Template"].Buttons, "TextButton")
-    print(#buttons.." "..move)
+    local buttons = getChildrenOfClass(boardUI["Bottom Middle"].Buttons, "TextButton")
+    if not buttons[move] then
+        return
+    end
+
     PressButton(buttons[move])
 end
 
