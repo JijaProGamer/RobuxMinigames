@@ -8,6 +8,15 @@ local PlayButton = LobbyMain["Bottom Middle"].Start
 local RoomsParentFrame = PlayerGui.ViewRooms["Middle Middle"].ViewRooms
 local RoomsFrame = RoomsParentFrame.Background.PlayerList.Objects
 
+local function getChildrenOfClass(parent, className)
+    local childrenOfClass = {}
+    for _, child in ipairs(parent:GetChildren()) do
+        if child:IsA(className) then
+            table.insert(childrenOfClass, child)
+        end
+    end
+    return childrenOfClass
+end
 
 function FindLocalArena()
     local ArenasList = Arenas:GetChildren()
@@ -118,7 +127,20 @@ function TicTacToe.uiToBoard(name)
     return { ["board"] = board, ["teamColor"] = teamColor } 
 end
 
+function TicTacToe.doMove(move)
+    local boardUI
 
+    if name == "Tic Tac Toe" then
+        boardUI = PlayerGui.TicTacToe
+    else 
+        boardUI = PlayerGui.RushTicTacToe
+    end
+
+    local buttons = getChildrenOfClass(boardUI["Bottom Middle Template"].Buttons, "TextButton")
+    print(#buttons)
+
+
+end
 
 function GetRooms()
     local Rooms = {}
@@ -195,5 +217,5 @@ end
 while task.wait(1) do
     local board = TicTacToe.uiToBoard("Tic Tac Toe")
     local bestMove = TicTacToe.bestMove(board.board, board.teamColor)
-    print(bestMove)
+    TicTacToe.doMove(bestMove)
 end
