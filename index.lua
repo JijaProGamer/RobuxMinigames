@@ -31,7 +31,7 @@ function FindLocalArena()
         local AreaTemplate = Arena:FindFirstChild("ArenaTemplate")
 
         if AreaTemplate then
-            if not AreaTemplate.Red.Character or not AreaTemplate.Red.Character.Nametag then
+            if not AreaTemplate.Red:FindFirstChild("Character") or not AreaTemplate.Red.Character:FindFirstChild("Nametag") then
                 continue
             end
 
