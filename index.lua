@@ -145,7 +145,7 @@ function TicTacToe.doMove(move)
     end
 
     local buttons = getChildrenOfClass(boardUI["Bottom Middle Template"].Buttons, "TextButton")
-    print(move, buttons)
+    print(#buttons.." "..move)
     PressButton(buttons[move])
 end
 
@@ -216,7 +216,6 @@ end
 --local FoundRoom = SearchForRoom()
 
 while task.wait(1) do
-    print("banana")
     local board = TicTacToe.uiToBoard("Tic Tac Toe")
     local bestMove = TicTacToe.bestMove(board.board, board.teamColor)
     TicTacToe.doMove(bestMove)
