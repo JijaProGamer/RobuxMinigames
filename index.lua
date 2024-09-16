@@ -145,6 +145,7 @@ function TicTacToe.doMove(move)
     end
 
     local buttons = getChildrenOfClass(boardUI["Bottom Middle Template"].Buttons, "TextButton")
+    print(move, buttons)
     PressButton(buttons[move])
 end
 
