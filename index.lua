@@ -136,9 +136,12 @@ function TicTacToe.uiToBoard(name)
 end
 
 function TicTacToe.doMove(name, move)
+    if not boardUI:FindFirstChild("Bottom Middle") then
+        return
+    end
+    
     local boardUI
 
-    print(name.." "..move)
     if name == "Tic Tac Toe" then
         boardUI = PlayerGui.TicTacToe
     else 
