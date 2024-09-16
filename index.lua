@@ -31,13 +31,15 @@ function FindLocalArena()
         local AreaTemplate = Arena:FindFirstChild("ArenaTemplate")
 
         if AreaTemplate then
-            if AreaTemplate.Red.Character then
-                local Red  = AreaTemplate.Red.Character.Nametag.Frame.Nickname.Text
-                local Blue = AreaTemplate.Blue.Character.Nametag.Frame.Nickname.Text
+            if not AreaTemplate.Red.Character or not AreaTemplate.Red.Character.Nametag then
+                continue
+            end
 
-                if Red == LocalPlayer.Name or Blue == LocalPlayer.Name then
-                    return AreaTemplate.Important
-                end
+            local Red  = AreaTemplate.Red.Character.Nametag.Frame.Nickname.Text
+            local Blue = AreaTemplate.Blue.Character.Nametag.Frame.Nickname.Text
+
+            if Red == LocalPlayer.Name or Blue == LocalPlayer.Name then
+                return AreaTemplate.Important
             end
         end
     end
