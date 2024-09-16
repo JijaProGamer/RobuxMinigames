@@ -135,7 +135,7 @@ function TicTacToe.uiToBoard(name)
     return { ["board"] = board, ["teamColor"] = teamColor } 
 end
 
-function TicTacToe.doMove(move)
+function TicTacToe.doMove(name, move)
     local boardUI
 
     if name == "Tic Tac Toe" then
@@ -219,7 +219,8 @@ end
 --local FoundRoom = SearchForRoom()
 
 while task.wait(1) do
-    local board = TicTacToe.uiToBoard("Tic Tac Toe")
+    local GameName = "Tic Tac Toe"
+    local board = TicTacToe.uiToBoard(GameName)
     local bestMove = TicTacToe.bestMove(board.board, board.teamColor)
-    TicTacToe.doMove(bestMove)
+    TicTacToe.doMove(GameName, bestMove)
 end
