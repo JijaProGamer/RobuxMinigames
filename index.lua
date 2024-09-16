@@ -138,6 +138,7 @@ end
 function TicTacToe.doMove(name, move)
     local boardUI
 
+    print(name.." "..move)
     if name == "Tic Tac Toe" then
         boardUI = PlayerGui.TicTacToe
     else 
