@@ -307,6 +307,7 @@ function PressPlayButton()
 end
 
 function IsRoomGood(Room)
+    print(Room.Robux.." "..RobuxChoses[MinRobux].." "..RobuxChoses[MaxRobux])
     if Room.Robux >= RobuxChoses[MinRobux] and Room.Robux <= RobuxChoses[MaxRobux] then
         if Room.GameName == "Rush Tic Tac Toe" or
             Room.GameName == "Tic Tac Toe"
