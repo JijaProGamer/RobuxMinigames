@@ -307,7 +307,8 @@ end]]
 
 while task.wait(1) do
     local GameName = "Tic Tac Toe"
-    local board = TicTacToe:uiToBoard(GameName)
+    local ArenaWorkspace = FindLocalArena()
+    local board = TicTacToe:uiToBoard(ArenaWorkspace, GameName)
     local bestMove = TicTacToe:bestMove(board.board, board.teamColor)
     TicTacToe:doMove(GameName, bestMove)
 end
