@@ -326,9 +326,8 @@ function SearchForRoom()
     local Rooms = GetRooms()
 
     for _, Room in ipairs(Rooms) do
-        print(Room)
-        for i = 1, #Room do
-            print(i.." "..Room[i])
+        for i,v in pairs(Room) do
+            print(i.." "..v)
         end
 
         if IsRoomGood(Room) then
