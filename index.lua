@@ -120,9 +120,10 @@ TicTacToe = {
         end
     
         if emptySpots == 9 then
-            local corners = {1, 3, 7, 9}
+            --local corners = {1, 3, 7, 9}
             
-            return corners[math.random(#corners)]
+            --return corners[math.random(#corners)]
+            return 5
         end
 
         
