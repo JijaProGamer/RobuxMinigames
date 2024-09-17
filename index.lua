@@ -307,7 +307,6 @@ function PressPlayButton()
 end
 
 function IsRoomGood(Room)
-    print(Room.Robux.." "..RobuxChoses[MinRobux].." "..RobuxChoses[MaxRobux])
     if Room.Robux >= RobuxChoses[MinRobux] and Room.Robux <= RobuxChoses[MaxRobux] then
         if Room.GameName == "Rush Tic Tac Toe" or
             Room.GameName == "Tic Tac Toe"
@@ -320,22 +319,6 @@ function IsRoomGood(Room)
 end
 
 function SearchForRoom()
-    --[[local OnNewRooms
-    OnNewRooms = RoomsFrame.ChildAdded:Connect(function()
-        OnNewRooms:Disconnect()
-
-        local Rooms = GetRooms()
-    
-        for _, Room in ipairs(Rooms) do
-            if IsRoomGood(Room) then
-                PressButton(Room.JoinButton)
-                return Room.GameName
-            end
-        end
-    end)
-
-    PressPlayButton()]]
-
     PressPlayButton()
 
     RoomsFrame.ChildAdded:Wait()
@@ -343,6 +326,10 @@ function SearchForRoom()
     local Rooms = GetRooms()
 
     for _, Room in ipairs(Rooms) do
+        for i = 1, #Room do
+            print(i.." "..Room[i])
+        end
+
         if IsRoomGood(Room) then
             PressButton(Room.JoinButton)
             return Room.GameName
