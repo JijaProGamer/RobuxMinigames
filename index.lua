@@ -7,7 +7,7 @@ local LobbyMain = PlayerGui.Lobby_Main
 local PlayButton = LobbyMain["Bottom Middle"].Start
 local RoomsParentFrame = PlayerGui.ViewRooms["Middle Middle"].ViewRooms
 local RoomsFrame = RoomsParentFrame.Background.PlayerList.Objects
-
+warn(-3)
 function PressButton(button)
     for _, connection in pairs(getconnections(button.MouseButton1Click)) do
         connection:Fire()
@@ -36,15 +36,16 @@ function FindLocalArena()
                 continue
             end
 
-            local Red  = Red.Character.Nametag.Frame:FindFirstChild("Nickname")
+            --[[local Red  = Red.Character.Nametag.Frame:FindFirstChild("Nickname")
             local Blue = AreaTemplate.Blue.Character.Nametag.Frame:FindFirstChild("Nickname")
 
-            print(Red)
-            print(Blue)
-            
             if not Red or not Blue then
                 continue
-            end
+            end]]
+
+            local Red  = Red.Character.Nametag.Frame.Nickname
+            local Blue = AreaTemplate.Blue.Character.Nametag.Frame.Nickname
+
 
             Red = Red.Text
             Blue = Blue.Text
@@ -57,7 +58,7 @@ function FindLocalArena()
 
     return nil
 end
-
+warn(-2)
 TicTacToe = {
     checkWinner = function(self, state)
         local winning_combinations = {
@@ -375,6 +376,7 @@ function SearchForRoom()
     return nil
 end
 
+warn(-1)
 --[[local GameName = nil
 local Started = false
 
