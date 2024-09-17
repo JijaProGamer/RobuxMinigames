@@ -43,12 +43,8 @@ function FindLocalArena()
                 continue
             end]]
 
-            local Red  = Red.Character.Nametag.Frame.Nickname
-            local Blue = AreaTemplate.Blue.Character.Nametag.Frame.Nickname
-
-
-            Red = Red.Text
-            Blue = Blue.Text
+            local Red  = Red.Character.Nametag.Frame.Nickname.Text
+            local Blue = AreaTemplate.Blue.Character.Nametag.Frame.Nickname.Text
 
             if Red == LocalPlayer.Name or Blue == LocalPlayer.Name then
                 return AreaTemplate.Important
@@ -405,7 +401,6 @@ while true do
     task.wait(1)
 
     local ArenaWorkspace = FindLocalArena()
-    print(ArenaWorkspace)
 
     if ArenaWorkspace then
         print(1)
