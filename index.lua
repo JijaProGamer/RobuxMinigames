@@ -46,6 +46,7 @@ function FindLocalArena()
             local Red  = Red.Character.Nametag.Frame.Nickname.Text
             local Blue = AreaTemplate.Blue.Character.Nametag.Frame.Nickname.Text
 
+            print(Red.." "..Blue)
             if Red == LocalPlayer.Name or Blue == LocalPlayer.Name then
                 return AreaTemplate.Important
             end
