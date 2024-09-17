@@ -36,20 +36,14 @@ function FindLocalArena()
                 continue
             end
 
-            --[[local Red  = Red.Character.Nametag.Frame:FindFirstChild("Nickname")
-            local Blue = AreaTemplate.Blue.Character.Nametag.Frame:FindFirstChild("Nickname")
+            local Red  = Red.Character.Nametag.Frame:FindFirstChild("Username")
+            local Blue = AreaTemplate.Blue.Character.Nametag.Frame:FindFirstChild("Username")
 
             if not Red or not Blue then
                 continue
-            end]]
+            end
 
-            local Red  = Red.Character.Nametag.Frame.Nickname.Text
-            local Blue = AreaTemplate.Blue.Character.Nametag.Frame.Nickname.Text
-
-            print(Red.." "..Blue)
-            if Red == LocalPlayer.Name or Blue == LocalPlayer.Name then
-                print(true)
-                print(AreaTemplate.Important)
+            if Red == "@"..LocalPlayer.Name or Blue == "@"..LocalPlayer.Name then
                 return AreaTemplate.Important
             end
         end
