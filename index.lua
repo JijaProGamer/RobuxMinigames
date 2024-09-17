@@ -43,6 +43,8 @@ function FindLocalArena()
             end
         end
     end
+
+    return nil
 end
 
 TicTacToe = {
@@ -72,7 +74,7 @@ TicTacToe = {
         return true
     end,
 
-    minimax = function(self, state, is_maximizing, player)
+    minimax = function(self, state, is_maximizing, player, alpha, beta)
         local winner = self:checkWinner(state)
         local opponent = player == "X" and "O" or "X"
         
@@ -85,9 +87,14 @@ TicTacToe = {
             for i = 1, 9 do
                 if state[i] == "_" then
                     state[i] = player
-                    local score = self:minimax(state, false, player)
+                    local score = self:minimax(state, false, player, alpha, beta)
                     state[i] = "_"
                     best_score = math.max(score, best_score)
+                    alpha = math.max(alpha, best_score)
+
+                    if beta <= alpha then
+                        break
+                    end
                 end
             end
             return best_score
@@ -96,9 +103,14 @@ TicTacToe = {
             for i = 1, 9 do
                 if state[i] == "_" then
                     state[i] = opponent
-                    local score = self:minimax(state, true, player)
+                    local score = self:minimax(state, true, player, alpha, beta)
                     state[i] = "_"
                     best_score = math.min(score, best_score)
+                    beta = math.min(beta, best_score)
+
+                    if beta <= alpha then
+                        break
+                    end
                 end
             end
             return best_score
@@ -112,7 +124,7 @@ TicTacToe = {
         for i = 1, 9 do
             if state[i] == "_" then
                 state[i] = player
-                local score = self:minimax(state, false, player)
+                local score = self:minimax(state, false, player, -math.huge, math.huge)
                 state[i] = "_"
                 if score > best_score then
                     best_score = score
@@ -130,7 +142,7 @@ TicTacToe = {
         return (col - 1) * 3 + row
     end,
     
-    uiToBoard = function(self, mode)
+    uiToBoard = function(self, ArenaWorkspace, mode)
         local board =  {"_", "_", "_", "_", "_", "_", "_", "_", "_"}
         local boardUI
     
@@ -147,7 +159,6 @@ TicTacToe = {
             teamColor = "X"
         end
     
-        local ArenaWorkspace = FindLocalArena()
         local BoardBlocks = ArenaWorkspace.Drops:GetChildren()
     
         for _, obj in ipairs(BoardBlocks) do
@@ -268,9 +279,31 @@ function SearchForRoom()
             return Room.GameName
         end
     end
+
+    return nil
 end
 
---local FoundRoom = SearchForRoom()
+--[[local GameName = nil
+while task.wait(1) do
+    local ArenaWorkspace = FindLocalArena()
+
+    if ArenaWorkspace then
+        if GameName == "Rush Tic Tac Toe" or
+            GameName == "Tic Tac Toe"
+        then  
+            local board = TicTacToe:uiToBoard(ArenaWorkspace, GameName)
+            local bestMove = TicTacToe:bestMove(board.board, board.teamColor)
+            TicTacToe:doMove(GameName, bestMove)
+        end
+    else
+        GameName = SearchForRoom()
+        if GameName then
+
+        else
+
+        end
+    end
+end]]
 
 while task.wait(1) do
     local GameName = "Tic Tac Toe"
