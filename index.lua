@@ -112,27 +112,17 @@ TicTacToe = {
     end,
 
     bestMove = function(self, state, player)
-        local emptySpots = {}
+        local emptySpots = 0
         for i = 1, 9 do
             if state[i] == "_" then
-                table.insert(emptySpots, i)
+                emptySpots ++
             end
         end
     
-        if #emptySpots == 9 then
+        if emptySpots == 9 then
             local corners = {1, 3, 7, 9}
-            local availableCorners = {}
-            for _, corner in ipairs(corners) do
-                if state[corner] == "_" then
-                    table.insert(availableCorners, corner)
-                end
-            end
             
-            if #availableCorners > 0 then
-                return availableCorners[math.random(#availableCorners)]
-            else
-                return emptySpots[math.random(#emptySpots)]
-            end
+            return corners[math.random(#corners)]
         end
 
         
