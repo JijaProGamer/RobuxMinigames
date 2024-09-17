@@ -360,7 +360,9 @@ function SearchForRoom()
 end
 
 local GameName = nil
-while task.wait(1) do
+while true do
+    task.wait(1)
+    
     print(1)
     local ArenaWorkspace = FindLocalArena()
     print(2)
