@@ -378,6 +378,9 @@ while task.wait(1) do
 
         if not CurrentGameName and not ArenaWorkspace then
             print(203)
+            GameName = nil
+        elseif not ArenaWorkspace then
+            print(300)
             GameName = CurrentGameName
             MakeGame()
         end
