@@ -1,4 +1,4 @@
-local url = "https://raw.githubusercontent.com/JijaProGamer/RobuxMinigames/main/index.lua?faj="..math.random(1, 50000)
+local url = "https://raw.githubusercontent.com/JijaProGamer/RobuxMinigames/main/index.lua?v="..math.random(1, 50000)
 
 local success, response = pcall(function()
     return game:HttpGet(url)
