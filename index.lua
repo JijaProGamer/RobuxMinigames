@@ -344,8 +344,8 @@ end
 function SearchForRoom()
     PressPlayButton()
 
-    RoomsFrame.ChildAdded:Wait()
-    task.wait(2)
+    RoomsFrame.ChildAdded:Wait(2.5)
+    task.wait(2.5)
 
     local Rooms = GetRooms()
 
@@ -360,14 +360,17 @@ function SearchForRoom()
 end
 
 local GameName = nil
-while task.wait(2.5) do
+while task.wait(1) do
     local ArenaWorkspace = FindLocalArena()
 
     if ArenaWorkspace then
         HandleGame(ArenaWorkspace, GameName)
     else
-        GameName = SearchForRoom()
-        if not GameName then
+        local CurrentGameName = SearchForRoom()
+        ArenaWorkspace = FindLocalArena()
+
+        if not CurrentGameName and not ArenaWorkspace then
+            GameName = CurrentGameName
             MakeGame()
         end
     end
