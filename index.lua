@@ -232,9 +232,9 @@ TicTacToe = {
 }
 
 function HandleGame(ArenaWorkspace, GameName)
-    if GameName == "Rush Tic Tac Toe" or
-        GameName == "Tic Tac Toe"
-    then  
+    --if GameName == "Rush Tic Tac Toe" or
+    --    GameName == "Tic Tac Toe"
+    if GameName == "Tic Tac Toe" then  
         if not TicTacToe:isMyTurn(GameName) then
             return
         end
@@ -366,7 +366,7 @@ function SearchForRoom()
     return nil
 end
 
-local GameName = nil
+--[[local GameName = nil
 local Started = false
 
 while true do
@@ -388,5 +388,15 @@ while true do
                 MakeGame()
             end
         end
+    end
+end]]
+
+while true do
+    task.wait(1)
+
+    local ArenaWorkspace = FindLocalArena()
+
+    if ArenaWorkspace then
+        HandleGame(ArenaWorkspace, "Tic Tac Toe")
     end
 end
