@@ -360,8 +360,7 @@ function SearchForRoom()
 end
 
 --[[local GameName = nil
-local WasLoggedIn = false
-local ArenaAppeared = false
+
 while true do
     task.wait(1)
 
@@ -369,36 +368,18 @@ while true do
 
     if ArenaWorkspace then
         HandleGame(ArenaWorkspace, GameName)
-        ArenaAppeared = true
     else
-        if ArenaAppeared or not WasLoggedIn then
-            local CurrentGameName = SearchForRoom()
-            ArenaWorkspace = FindLocalArena()
-    
-            if CurrentGameName then
-                if not ArenaWorkspace then
-                    GameName = CurrentGameName
-                    MakeGame()
-                    WasLoggeIn = true
-                    ArenaAppeared = false
-                end
-            else
-                GameName = nil
-                WasLoggedIn = false
-            end
+        local CurrentGameName = SearchForRoom()
+
+        if CurrentGameName then
+            GameName = CurrentGameName
+            MakeGame()
         end
     end
 end]]
 
 local GameName = nil
-local WasLoggedIn = false
-local ArenaAppeared = false
-local IsInGame = false
-local FinishedGame = false
-
-local maxArenaWaitTime = 30
-local searchRetryInterval = 1
-local searchRetryCount = math.ceil(maxArenaWaitTime / searchRetryInterval)
+local Started = false
 
 while true do
     task.wait(1)
@@ -407,48 +388,16 @@ while true do
 
     if ArenaWorkspace then
         HandleGame(ArenaWorkspace, GameName)
-        ArenaAppeared = true
-        WasLoggedIn = true
-        IsInGame = true
-        FinishedGame = false
+        Started = false
     else
-        if IsInGame and not ArenaWorkspace then
-            IsInGame = false
-            FinishedGame = true
-        end
-
-        if FinishedGame or not WasLoggedIn then
+        if not Started then
             local CurrentGameName = SearchForRoom()
-            if CurrentGameName then
-                local arenaFound = false
-                for attempt = 1, searchRetryCount do
-                    ArenaWorkspace = FindLocalArena()
-                    if ArenaWorkspace then
-                        arenaFound = true
-                        break
-                    end
-                    task.wait(searchRetryInterval)
-                end
 
-                if arenaFound then
-                    GameName = CurrentGameName
-                    HandleGame(ArenaWorkspace, GameName)
-                    IsInGame = true
-                    FinishedGame = false
-                else
-                    GameName = CurrentGameName
-                    MakeGame()
-                    WasLoggedIn = true
-                    ArenaAppeared = false
-                    IsInGame = false
-                    FinishedGame = false
-                end
-            else
-                GameName = nil
-                WasLoggedIn = false
-                ArenaAppeared = false
-                IsInGame = false
-                FinishedGame = false
+            if CurrentGameName then
+                GameName = CurrentGameName
+                Started = true
+            else 
+                MakeGame()
             end
         end
     end
