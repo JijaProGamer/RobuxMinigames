@@ -240,20 +240,34 @@ function IsRoomGood(Room)
 end
 
 function SearchForRoom()
+    --[[local OnNewRooms
+    OnNewRooms = RoomsFrame.ChildAdded:Connect(function()
+        OnNewRooms:Disconnect()
+
+        local Rooms = GetRooms()
+    
+        for _, Room in ipairs(Rooms) do
+            if IsRoomGood(Room) then
+                PressButton(Room.JoinButton)
+                return Room.GameName
+            end
+        end
+    end)
+
+    PressPlayButton()]]
+
     PressPlayButton()
 
-    task.wait(5)
+    RoomsFrame.ChildAdded:Wait()
 
     local Rooms = GetRooms()
-    
+
     for _, Room in ipairs(Rooms) do
         if IsRoomGood(Room) then
             PressButton(Room.JoinButton)
             return Room.GameName
         end
     end
-
-    return false
 end
 
 --local FoundRoom = SearchForRoom()
