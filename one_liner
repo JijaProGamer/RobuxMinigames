@@ -6,10 +6,11 @@ local repository = "RobuxMinigames"
 local branchName = "main"
 local filePath = "index.lua"
 
+-- Function to get the latest commit hash
 local function getLatestCommitHash()
     local apiUrl = "https://api.github.com/repos/" .. username .. "/" .. repository .. "/branches/" .. branchName
     local success, response = pcall(function()
-        return HttpService:GetAsync(apiUrl)
+        return game:HttpGet(apiUrl)
     end)
     
     if success then
@@ -21,10 +22,11 @@ local function getLatestCommitHash()
     end
 end
 
+-- Function to get the file content using the commit hash
 local function getFileContent(commitHash)
     local rawUrl = "https://raw.githubusercontent.com/" .. username .. "/" .. repository .. "/" .. commitHash .. "/" .. filePath
     local success, response = pcall(function()
-        return HttpService:GetAsync(rawUrl)
+        return game:HttpGet(rawUrl)
     end)
     
     if success then
@@ -35,6 +37,7 @@ local function getFileContent(commitHash)
     end
 end
 
+-- Main logic
 local commitHash = getLatestCommitHash()
 if commitHash then
     local fileContent = getFileContent(commitHash)
