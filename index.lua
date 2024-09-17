@@ -327,7 +327,7 @@ function SearchForRoom()
 
     for _, Room in ipairs(Rooms) do
         for i,v in pairs(Room) do
-            print(i.." "..v)
+            print(tostring(i).." "..tostring(v))
         end
 
         if IsRoomGood(Room) then
