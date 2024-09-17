@@ -1,16 +1,49 @@
-local url = "https://raw.githubusercontent.com/JijaProGamer/RobuxMinigames/main/index.lua?v="..math.random(1, 50000)
+local HttpService = game:GetService("HttpService")
 
-local success, response = pcall(function()
-    return game:HttpGet(url)
-end)
+-- GitHub repository details
+local username = "JijaProGamer"
+local repository = "RobuxMinigames"
+local branchName = "main"
+local filePath = "index.lua"
 
-if success then
-    local loadedFunc, err = loadstring(response)
-    if loadedFunc then
-        loadedFunc()
+local function getLatestCommitHash()
+    local apiUrl = "https://api.github.com/repos/" .. username .. "/" .. repository .. "/branches/" .. branchName
+    local success, response = pcall(function()
+        return HttpService:GetAsync(apiUrl)
+    end)
+    
+    if success then
+        local branchData = HttpService:JSONDecode(response)
+        return branchData.commit.sha
     else
-        warn("Error loading script: " .. err)
+        warn("Error fetching commit hash: " .. response)
+        return nil
     end
-else
-    warn("Error fetching script: " .. response)
+end
+
+local function getFileContent(commitHash)
+    local rawUrl = "https://raw.githubusercontent.com/" .. username .. "/" .. repository .. "/" .. commitHash .. "/" .. filePath
+    local success, response = pcall(function()
+        return HttpService:GetAsync(rawUrl)
+    end)
+    
+    if success then
+        return response
+    else
+        warn("Error fetching script: " .. response)
+        return nil
+    end
+end
+
+local commitHash = getLatestCommitHash()
+if commitHash then
+    local fileContent = getFileContent(commitHash)
+    if fileContent then
+        local loadedFunc, err = loadstring(fileContent)
+        if loadedFunc then
+            loadedFunc()
+        else
+            warn("Error loading script: " .. err)
+        end
+    end
 end
