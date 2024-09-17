@@ -211,8 +211,7 @@ function HandleGame(ArenaWorkspace, GameName)
     if GameName == "Rush Tic Tac Toe" or
         GameName == "Tic Tac Toe"
     then  
-        print(TicTacToe:isMyTurn())
-        if not TicTacToe:isMyTurn() then
+        if not TicTacToe:isMyTurn(GameName) then
             return
         end
 
