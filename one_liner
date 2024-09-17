@@ -1,1 +1,16 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/JijaProGamer/RobuxMinigames/main/index.lua", true))()
+local url = "https://raw.githubusercontent.com/JijaProGamer/RobuxMinigames/main/index.lua"
+
+local success, response = pcall(function()
+    return game:HttpGet(url)
+end)
+
+if success then
+    local loadedFunc, err = loadstring(response)
+    if loadedFunc then
+        loadedFunc()
+    else
+        warn("Error loading script: " .. err)
+    end
+else
+    warn("Error fetching script: " .. response)
+end

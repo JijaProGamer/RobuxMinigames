@@ -45,117 +45,152 @@ function FindLocalArena()
     end
 end
 
-local TicTacToe = {}
+TicTacToe = {
+    checkWinner = function(self, state)
+        local winning_combinations = {
+            {1, 2, 3}, {4, 5, 6}, {7, 8, 9},
+            {1, 4, 7}, {2, 5, 8}, {3, 6, 9},
+            {1, 5, 9}, {3, 5, 7}
+        }
 
-function TicTacToe.checkWin(board, player)
-    local wins = {
-        {1, 2, 3}, {4, 5, 6}, {7, 8, 9},
-        {1, 4, 7}, {2, 5, 8}, {3, 6, 9},
-        {1, 5, 9}, {3, 5, 7}
-    }
+        for _, combo in ipairs(winning_combinations) do
+            local a, b, c = combo[1], combo[2], combo[3]
+            if state[a] ~= "_" and state[a] == state[b] and state[a] == state[c] then
+                return state[a]
+            end
+        end
+
+        return nil
+    end,
+
+    isFull = function(self, state)
+        for i = 1, 9 do
+            if state[i] == "_" then
+                return false
+            end
+        end
+        return true
+    end,
+
+    minimax = function(self, state, is_maximizing, player)
+        local winner = self:checkWinner(state)
+        local opponent = player == "X" and "O" or "X"
+        
+        if winner == player then return 1 end
+        if winner == opponent then return -1 end
+        if self:isFull(state) then return 0 end
+
+        if is_maximizing then
+            local best_score = -math.huge
+            for i = 1, 9 do
+                if state[i] == "_" then
+                    state[i] = player
+                    local score = self:minimax(state, false, player)
+                    state[i] = "_"
+                    best_score = math.max(score, best_score)
+                end
+            end
+            return best_score
+        else
+            local best_score = math.huge
+            for i = 1, 9 do
+                if state[i] == "_" then
+                    state[i] = opponent
+                    local score = self:minimax(state, true, player)
+                    state[i] = "_"
+                    best_score = math.min(score, best_score)
+                end
+            end
+            return best_score
+        end
+    end,
+
+    bestMove = function(self, state, player)
+        local best_score = -math.huge
+        local move = nil
+
+        for i = 1, 9 do
+            if state[i] == "_" then
+                state[i] = player
+                local score = self:minimax(state, false, player)
+                state[i] = "_"
+                if score > best_score then
+                    best_score = score
+                    move = i
+                end
+            end
+        end
+
+        return move
+    end
+
+    getIndexFromName = function(self, name)
+        local row = tonumber(string.sub(name, 1, 1))
+        local col = 4 - tonumber(string.sub(name, 2, 2))
+        return (col - 1) * 3 + row
+    end,
     
-    for _, win in ipairs(wins) do
-        if board[win[1]] == player and board[win[2]] == player and board[win[3]] == "_" then
-            return win[3]
-        elseif board[win[1]] == player and board[win[3]] == player and board[win[2]] == "_" then
-            return win[2]
-        elseif board[win[2]] == player and board[win[3]] == player and board[win[1]] == "_" then
-            return win[1]
+    uiToBoard = function(self, mode)
+        local board =  {"_", "_", "_", "_", "_", "_", "_", "_", "_"}
+        local boardUI
+    
+        if mode == "Tic Tac Toe" then
+            boardUI = PlayerGui.TicTacToe
+        else 
+            boardUI = PlayerGui.RushTicTacToe
         end
-    end
-
-    return nil
-end
-
-function TicTacToe.bestMove(board, player)
-    local winMove = TicTacToe.checkWin(board, player)
-    if winMove then
-        return winMove
-    end
-
-    local opponent = player == "X" and "O" or "X"
-    local blockMove = TicTacToe.checkWin(board, opponent)
-    if blockMove then
-        return blockMove
-    end
-
-    local strategicMoves = {5, 1, 3, 7, 9, 2, 4, 6, 8}
-
-    for _, move in ipairs(strategicMoves) do
-        if board[move] == "_" then
-            return move
+    
+        local teamColor = boardUI["Top Middle Template"].RoundInfo
+        if teamColor.TeamColorRed.Visible then
+            teamColor = "O"
+        else
+            teamColor = "X"
         end
-    end
-
-    return nil
-end
-
-
-function getIndexFromName(name)
-    local row = tonumber(string.sub(name, 1, 1))
-    local col = 4 - tonumber(string.sub(name, 2, 2))
-    return (col - 1) * 3 + row
-end
-
-function TicTacToe.uiToBoard(name)
-    local board =  {"_", "_", "_", "_", "_", "_", "_", "_", "_"}
-    local boardUI
-
-    if name == "Tic Tac Toe" then
-        boardUI = PlayerGui.TicTacToe
-    else 
-        boardUI = PlayerGui.RushTicTacToe
-    end
-
-    local teamColor = boardUI["Top Middle Template"].RoundInfo
-    if teamColor.TeamColorRed.Visible then
-        teamColor = "O"
-    else
-        teamColor = "X"
-    end
-
-    local ArenaWorkspace = FindLocalArena()
-    local BoardBlocks = ArenaWorkspace.Drops:GetChildren()
-
-    for _, obj in ipairs(BoardBlocks) do
-        local name = obj.Name
-        local color = obj.BrickColor
-
-        local symbol
-        if color == BrickColor.new("Steel blue") then
-            symbol = "X"
-        elseif color == BrickColor.new("Persimmon") then
-            symbol = "O"
+    
+        local ArenaWorkspace = FindLocalArena()
+        local BoardBlocks = ArenaWorkspace.Drops:GetChildren()
+    
+        for _, obj in ipairs(BoardBlocks) do
+            local name = obj.Name
+            local color = obj.BrickColor
+    
+            local symbol
+            if color == BrickColor.new("Steel blue") then
+                symbol = "X"
+            elseif color == BrickColor.new("Persimmon") then
+                symbol = "O"
+            end
+    
+            local index = getIndexFromName(name)
+            board[index] = symbol
         end
-
-        local index = getIndexFromName(name)
-        board[index] = symbol
+    
+        return { ["board"] = board, ["teamColor"] = teamColor } 
+    end,
+    
+    doMove = function(self, mode, move)
+        local boardUI
+    
+        if mode == "Tic Tac Toe" then
+            boardUI = PlayerGui.TicTacToe
+        else 
+            boardUI = PlayerGui.RushTicTacToe
+        end
+    
+        if not boardUI:FindFirstChild("Bottom Middle") then
+            return
+        end
+    
+    
+        local buttons = getChildrenOfClass(boardUI["Bottom Middle"].Buttons, "TextButton")
+        if not buttons[move] then
+            return
+        end
+    
+        PressButton(buttons[move])
     end
+}
 
-    return { ["board"] = board, ["teamColor"] = teamColor } 
-end
-
-function TicTacToe.doMove(name, move)
-    local boardUI
-
-    if name == "Tic Tac Toe" then
-        boardUI = PlayerGui.TicTacToe
-    else 
-        boardUI = PlayerGui.RushTicTacToe
-    end
-
-    if not boardUI:FindFirstChild("Bottom Middle") then
-        return
-    end
-
-
-    local buttons = getChildrenOfClass(boardUI["Bottom Middle"].Buttons, "TextButton")
-    if not buttons[move] then
-        return
-    end
-
-    PressButton(buttons[move])
-end
 
 function GetRooms()
     local Rooms = {}
@@ -186,7 +221,7 @@ function GetRooms()
     return Rooms
 end
 
-function PressRoomsButton()
+function PressPlayButton()
     if not RoomsParentFrame.Visible then
         PressButton(PlayButton)
     end
@@ -205,7 +240,7 @@ function IsRoomGood(Room)
 end
 
 function SearchForRoom()
-    PressRoomsButton()
+    PressPlayButton()
 
     task.wait(5)
 
@@ -225,7 +260,7 @@ end
 
 while task.wait(1) do
     local GameName = "Tic Tac Toe"
-    local board = TicTacToe.uiToBoard(GameName)
-    local bestMove = TicTacToe.bestMove(board.board, board.teamColor)
-    TicTacToe.doMove(GameName, bestMove)
+    local board = TicTacToe:uiToBoard(GameName)
+    local bestMove = TicTacToe:bestMove(board.board, board.teamColor)
+    TicTacToe:doMove(GameName, bestMove)
 end
