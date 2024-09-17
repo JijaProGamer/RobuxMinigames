@@ -393,6 +393,9 @@ end]]
 local GameName = nil
 local WasLoggedIn = false
 local ArenaAppeared = false
+local IsInGame = false
+local FinishedGame = false
+
 local maxArenaWaitTime = 30
 local searchRetryInterval = 1
 local searchRetryCount = math.ceil(maxArenaWaitTime / searchRetryInterval)
@@ -406,8 +409,15 @@ while true do
         HandleGame(ArenaWorkspace, GameName)
         ArenaAppeared = true
         WasLoggedIn = true
+        IsInGame = true
+        FinishedGame = false
     else
-        if ArenaAppeared or not WasLoggedIn then
+        if IsInGame and not ArenaWorkspace then
+            IsInGame = false
+            FinishedGame = true
+        end
+
+        if FinishedGame or not WasLoggedIn then
             local CurrentGameName = SearchForRoom()
             if CurrentGameName then
                 local arenaFound = false
@@ -423,16 +433,22 @@ while true do
                 if arenaFound then
                     GameName = CurrentGameName
                     HandleGame(ArenaWorkspace, GameName)
+                    IsInGame = true
+                    FinishedGame = false
                 else
                     GameName = CurrentGameName
                     MakeGame()
                     WasLoggedIn = true
                     ArenaAppeared = false
+                    IsInGame = false
+                    FinishedGame = false
                 end
             else
                 GameName = nil
                 WasLoggedIn = false
                 ArenaAppeared = false
+                IsInGame = false
+                FinishedGame = false
             end
         end
     end
