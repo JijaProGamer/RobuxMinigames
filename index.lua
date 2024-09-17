@@ -391,10 +391,8 @@ while true do
     end
 end]]
 
-print(1)
 while true do
     task.wait(1)
-    print(2)
 
     local ArenaWorkspace = FindLocalArena()
 
