@@ -324,10 +324,10 @@ function SearchForRoom()
     PressPlayButton()
 
     RoomsFrame.ChildAdded:Wait()
+    task.wait(2)
 
     local Rooms = GetRooms()
 
-    print(#Rooms)
     for _, Room in ipairs(Rooms) do
         if IsRoomGood(Room) then
             PressButton(Room.JoinButton)
