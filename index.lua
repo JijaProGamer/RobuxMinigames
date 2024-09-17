@@ -36,8 +36,15 @@ function FindLocalArena()
                 continue
             end
 
-            local Red  = Red.Character.Nametag.Frame.Nickname.Text
-            local Blue = AreaTemplate.Blue.Character.Nametag.Frame.Nickname.Text
+            local Red  = Red.Character.Nametag.Frame:FindFirstChild("Nickname")
+            local Blue = AreaTemplate.Blue.Character.Nametag.Frame:FindFirstChild("Nickname")
+
+            if not Red or not Blue then
+                continue
+            end
+
+            Red = Red.Text
+            Blue = Blue.Text
 
             if Red == LocalPlayer.Name or Blue == LocalPlayer.Name then
                 return AreaTemplate.Important
@@ -358,25 +365,6 @@ function SearchForRoom()
 
     return nil
 end
-
---[[local GameName = nil
-
-while true do
-    task.wait(1)
-
-    local ArenaWorkspace = FindLocalArena()
-
-    if ArenaWorkspace then
-        HandleGame(ArenaWorkspace, GameName)
-    else
-        local CurrentGameName = SearchForRoom()
-
-        if CurrentGameName then
-            GameName = CurrentGameName
-            MakeGame()
-        end
-    end
-end]]
 
 local GameName = nil
 local Started = false
