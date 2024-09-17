@@ -161,7 +161,7 @@ TicTacToe = {
                 symbol = "O"
             end
     
-            local index = getIndexFromName(name)
+            local index = self:getIndexFromName(name)
             board[index] = symbol
         end
     
