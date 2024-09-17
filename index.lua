@@ -181,7 +181,9 @@ TicTacToe = {
             boardUI = PlayerGui.RushTicTacToe
         end
 
-        return boardUI["Bottom Middle"] and boardUI["Bottom Middle"].Visible
+        local BottomMiddle = boardUI:FindFirstChild("Bottom Middle")
+
+        return BottomMiddle and BottomMiddle.Visible or false
     end,
     
     doMove = function(self, mode, move)
