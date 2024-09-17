@@ -171,6 +171,18 @@ TicTacToe = {
     
         return { ["board"] = board, ["teamColor"] = teamColor } 
     end,
+
+    isMyTurn = function(self, mode)
+        local boardUI
+    
+        if mode == "Tic Tac Toe" then
+            boardUI = PlayerGui.TicTacToe
+        else 
+            boardUI = PlayerGui.RushTicTacToe
+        end
+
+        return boardUI["Bottom Middle"] and boardUI["Bottom Middle"].Visible
+    end,
     
     doMove = function(self, mode, move)
         local boardUI
@@ -199,14 +211,18 @@ function HandleGame(ArenaWorkspace, GameName)
     if GameName == "Rush Tic Tac Toe" or
         GameName == "Tic Tac Toe"
     then  
+        if not TicTacToe:isMyTurn() then
+            return
+        end
+
         local board = TicTacToe:uiToBoard(ArenaWorkspace, GameName)
         local bestMove = TicTacToe:bestMove(board.board, board.teamColor)
         TicTacToe:doMove(GameName, bestMove)
     end
 end
 
-local MinRobux = 0
-local MaxRobux = 0
+local MinRobux = 1
+local MaxRobux = 1
 local RobuxChoses = {
     0,
     10,
