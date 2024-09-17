@@ -7,7 +7,7 @@ local LobbyMain = PlayerGui.Lobby_Main
 local PlayButton = LobbyMain["Bottom Middle"].Start
 local RoomsParentFrame = PlayerGui.ViewRooms["Middle Middle"].ViewRooms
 local RoomsFrame = RoomsParentFrame.Background.PlayerList.Objects
-warn(-3)
+
 function PressButton(button)
     for _, connection in pairs(getconnections(button.MouseButton1Click)) do
         connection:Fire()
@@ -58,7 +58,7 @@ function FindLocalArena()
 
     return nil
 end
-warn(-2)
+
 TicTacToe = {
     checkWinner = function(self, state)
         local winning_combinations = {
@@ -376,7 +376,6 @@ function SearchForRoom()
     return nil
 end
 
-warn(-1)
 --[[local GameName = nil
 local Started = false
 
@@ -402,11 +401,12 @@ while true do
     end
 end]]
 
-print(0)
 while true do
     task.wait(1)
 
+    print(-1)
     local ArenaWorkspace = FindLocalArena()
+    print(0)
 
     if ArenaWorkspace then
         print(1)
