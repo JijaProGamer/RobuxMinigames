@@ -404,9 +404,8 @@ end]]
 while true do
     task.wait(1)
 
-    print(-1)
     local ArenaWorkspace = FindLocalArena()
-    print(0)
+    print(ArenaWorkspace)
 
     if ArenaWorkspace then
         print(1)
