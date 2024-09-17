@@ -115,7 +115,7 @@ TicTacToe = {
         local emptySpots = 0
         for i = 1, 9 do
             if state[i] == "_" then
-                emptySpots ++
+                emptySpots += 1
             end
         end
     
