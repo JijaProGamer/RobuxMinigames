@@ -375,7 +375,7 @@ while true do
             if not ArenaWorkspace then
                 GameName = CurrentGameName
                 MakeGame()
-                task.wait(5)
+                task.wait(10)
             end
         else
             GameName = nil
