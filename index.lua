@@ -39,6 +39,9 @@ function FindLocalArena()
             local Red  = Red.Character.Nametag.Frame:FindFirstChild("Nickname")
             local Blue = AreaTemplate.Blue.Character.Nametag.Frame:FindFirstChild("Nickname")
 
+            print(Red)
+            print(Blue)
+            
             if not Red or not Blue then
                 continue
             end
