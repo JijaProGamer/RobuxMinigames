@@ -361,15 +361,23 @@ end
 
 local GameName = nil
 while task.wait(1) do
+    print(1)
     local ArenaWorkspace = FindLocalArena()
+    print(2)
 
     if ArenaWorkspace then
+        print(100)
         HandleGame(ArenaWorkspace, GameName)
+        print(101)
     else
+        print(200)
         local CurrentGameName = SearchForRoom()
+        print(201)
         ArenaWorkspace = FindLocalArena()
+        print(202)
 
         if not CurrentGameName and not ArenaWorkspace then
+            print(203)
             GameName = CurrentGameName
             MakeGame()
         end
