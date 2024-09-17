@@ -326,6 +326,7 @@ function SearchForRoom()
     local Rooms = GetRooms()
 
     for _, Room in ipairs(Rooms) do
+        print(Room)
         for i = 1, #Room do
             print(i.." "..Room[i])
         end
