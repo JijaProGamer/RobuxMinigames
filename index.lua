@@ -31,11 +31,12 @@ function FindLocalArena()
         local AreaTemplate = Arena:FindFirstChild("ArenaTemplate")
 
         if AreaTemplate then
-            if not AreaTemplate.Red:FindFirstChild("Character") or not AreaTemplate.Red.Character:FindFirstChild("Nametag") then
+            local Red = AreaTemplate:FindFirstChild("Red")
+            if not Red or not Red:FindFirstChild("Character") or not AreaTemplate.Red.Character:FindFirstChild("Nametag") then
                 continue
             end
 
-            local Red  = AreaTemplate.Red.Character.Nametag.Frame.Nickname.Text
+            local Red  = Red.Character.Nametag.Frame.Nickname.Text
             local Blue = AreaTemplate.Blue.Character.Nametag.Frame.Nickname.Text
 
             if Red == LocalPlayer.Name or Blue == LocalPlayer.Name then
@@ -182,7 +183,6 @@ TicTacToe = {
         end
 
         local BottomMiddle = boardUI:FindFirstChild("Bottom Middle")
-
         return BottomMiddle and BottomMiddle.Visible or false
     end,
     
