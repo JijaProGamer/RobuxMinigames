@@ -391,4 +391,6 @@ while task.wait(1) do
             GameName = nil
         end
     end
+
+    print("end")
 end
