@@ -65,6 +65,7 @@ TicTacToe = {
         return nil
     end,
 
+    -- Function to check if the board is full (a draw)
     isFull = function(self, state)
         for i = 1, 9 do
             if state[i] == "_" then
@@ -74,12 +75,12 @@ TicTacToe = {
         return true
     end,
 
-    minimax = function(self, state, is_maximizing, player, alpha, beta)
+    minimax = function(self, state, depth, is_maximizing, player)
         local winner = self:checkWinner(state)
         local opponent = player == "X" and "O" or "X"
         
-        if winner == player then return 1 end
-        if winner == opponent then return -1 end
+        if winner == player then return 10 - depth end
+        if winner == opponent then return depth - 10 end
         if self:isFull(state) then return 0 end
 
         if is_maximizing then
@@ -87,14 +88,10 @@ TicTacToe = {
             for i = 1, 9 do
                 if state[i] == "_" then
                     state[i] = player
-                    local score = self:minimax(state, false, player, alpha, beta)
+                    local score = self:minimax(state, depth + 1, false, player)
                     state[i] = "_"
                     best_score = math.max(score, best_score)
-                    alpha = math.max(alpha, best_score)
-
-                    if beta <= alpha then
-                        break
-                    end
+                    if best_score == 10 - depth then return best_score end
                 end
             end
             return best_score
@@ -103,14 +100,10 @@ TicTacToe = {
             for i = 1, 9 do
                 if state[i] == "_" then
                     state[i] = opponent
-                    local score = self:minimax(state, true, player, alpha, beta)
+                    local score = self:minimax(state, depth + 1, true, player)
                     state[i] = "_"
                     best_score = math.min(score, best_score)
-                    beta = math.min(beta, best_score)
-
-                    if beta <= alpha then
-                        break
-                    end
+                    if best_score == depth - 10 then return best_score end
                 end
             end
             return best_score
@@ -120,11 +113,11 @@ TicTacToe = {
     bestMove = function(self, state, player)
         local best_score = -math.huge
         local move = nil
-
+        
         for i = 1, 9 do
             if state[i] == "_" then
                 state[i] = player
-                local score = self:minimax(state, false, player, -math.huge, math.huge)
+                local score = self:minimax(state, 0, false, player)
                 state[i] = "_"
                 if score > best_score then
                     best_score = score
@@ -132,7 +125,7 @@ TicTacToe = {
                 end
             end
         end
-
+        
         return move
     end,
 
@@ -202,6 +195,65 @@ TicTacToe = {
     end
 }
 
+function HandleGame(ArenaWorkspace, GameName)
+    if GameName == "Rush Tic Tac Toe" or
+        GameName == "Tic Tac Toe"
+    then  
+        local board = TicTacToe:uiToBoard(ArenaWorkspace, GameName)
+        local bestMove = TicTacToe:bestMove(board.board, board.teamColor)
+        TicTacToe:doMove(GameName, bestMove)
+    end
+end
+
+local MinRobux = 0
+local MaxRobux = 0
+local RobuxChoses = {
+    0,
+    10,
+    20,
+    30, 
+    40,
+    50,
+    100,
+    150,
+    200,
+    300,
+    400,
+    500,
+    1000,
+    2000,
+    3000,
+    5000,
+    10000,
+    100000,
+    1000000,
+    500000
+}
+local GamesDoable = {
+    "Rush Tic Tac Toe",
+    "Tic Tac Toe"
+}
+
+function GetRobuxModesDoable()
+
+    for i = MinRobux, MaxRobux do
+        local RobuxValue = RobuxChoses[i]
+
+
+    end
+end
+
+function GotoMode()
+
+end
+
+function MakeGame()
+    local ModeChosen = array[math.random(1, #GamesDoable)];
+
+    
+    //local RobuxChosen = 
+
+end
 
 function GetRooms()
     local Rooms = {}
@@ -239,7 +291,7 @@ function PressPlayButton()
 end
 
 function IsRoomGood(Room)
-    if Room.Robux == 0 then
+    if Room.Robux >= RobuxChoses[MinRobux] and Room.Robux <= MaxRobux[MaxRobux] then
         if Room.GameName == "Rush Tic Tac Toe" or
             Room.GameName == "Tic Tac Toe"
         then
@@ -283,32 +335,16 @@ function SearchForRoom()
     return nil
 end
 
---[[local GameName = nil
+local GameName = nil
 while task.wait(1) do
     local ArenaWorkspace = FindLocalArena()
 
     if ArenaWorkspace then
-        if GameName == "Rush Tic Tac Toe" or
-            GameName == "Tic Tac Toe"
-        then  
-            local board = TicTacToe:uiToBoard(ArenaWorkspace, GameName)
-            local bestMove = TicTacToe:bestMove(board.board, board.teamColor)
-            TicTacToe:doMove(GameName, bestMove)
-        end
+        HandleGame(ArenaWorkspace, GameName)
     else
         GameName = SearchForRoom()
-        if GameName then
-
-        else
-
+        if not GameName then
+            MakeGame()
         end
     end
-end]]
-
-while task.wait(1) do
-    local GameName = "Tic Tac Toe"
-    local ArenaWorkspace = FindLocalArena()
-    local board = TicTacToe:uiToBoard(ArenaWorkspace, GameName)
-    local bestMove = TicTacToe:bestMove(board.board, board.teamColor)
-    TicTacToe:doMove(GameName, bestMove)
 end
