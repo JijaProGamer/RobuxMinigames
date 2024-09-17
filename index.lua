@@ -48,6 +48,8 @@ function FindLocalArena()
 
             print(Red.." "..Blue)
             if Red == LocalPlayer.Name or Blue == LocalPlayer.Name then
+                print(true)
+                print(AreaTemplate.Important)
                 return AreaTemplate.Important
             end
         end
