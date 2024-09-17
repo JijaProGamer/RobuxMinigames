@@ -325,11 +325,8 @@ function SearchForRoom()
 
     local Rooms = GetRooms()
 
+    print(#Rooms)
     for _, Room in ipairs(Rooms) do
-        for i,v in pairs(Room) do
-            print(tostring(i).." "..tostring(v))
-        end
-
         if IsRoomGood(Room) then
             PressButton(Room.JoinButton)
             return Room.GameName
