@@ -382,7 +382,7 @@ while task.wait(1) do
                 MakeGame()
             end
             print(203)
-        else then
+        else
             print(300)
             GameName = nil
         end
