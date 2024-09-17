@@ -43,6 +43,9 @@ function FindLocalArena()
                 continue
             end
 
+            Red = Red.Text
+            Blue = Blue.Text
+            
             if Red == "@"..LocalPlayer.Name or Blue == "@"..LocalPlayer.Name then
                 return AreaTemplate.Important
             end
