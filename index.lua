@@ -122,7 +122,7 @@ TicTacToe = {
         end
 
         return move
-    end
+    end,
 
     getIndexFromName = function(self, name)
         local row = tonumber(string.sub(name, 1, 1))
