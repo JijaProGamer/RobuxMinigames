@@ -286,6 +286,10 @@ function GetRooms()
             continue
         end
 
+        if not DataFrame:FindFirstChild("Join") then
+            continue
+        end
+
         local GameName = DataFrame.GameName.Text
         local PlayerName = string.sub(DataFrame.DisplayName.Text, 11)
         local Robux = tonumber(DataFrame.Join.Amount.Text)
