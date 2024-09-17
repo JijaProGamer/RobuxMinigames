@@ -359,9 +359,8 @@ function SearchForRoom()
     return nil
 end
 
---local GameName = nil
-local GameName = "Tic Tac Toe"
-while task.wait(1) do
+local GameName = nil
+while task.wait(2.5) do
     local ArenaWorkspace = FindLocalArena()
 
     if ArenaWorkspace then
