@@ -376,13 +376,15 @@ while task.wait(1) do
         ArenaWorkspace = FindLocalArena()
         print(202)
 
-        if not CurrentGameName and not ArenaWorkspace then
+        if CurrentGameName then
+            if not ArenaWorkspace then
+                GameName = CurrentGameName
+                MakeGame()
+            end
             print(203)
-            GameName = nil
-        elseif not ArenaWorkspace then
+        else then
             print(300)
-            GameName = CurrentGameName
-            MakeGame()
+            GameName = nil
         end
     end
 end
