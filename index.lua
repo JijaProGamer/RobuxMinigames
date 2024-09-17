@@ -344,8 +344,8 @@ end
 function SearchForRoom()
     PressPlayButton()
 
-    RoomsFrame.ChildAdded:Wait(2.5)
-    task.wait(2.5)
+    RoomsFrame.ChildAdded:Wait(2)
+    task.wait(2)
 
     local Rooms = GetRooms()
 
@@ -383,8 +383,9 @@ while task.wait(1) do
                 GameName = CurrentGameName
                 print(205)
                 MakeGame()
+                print(206)
             end
-            print(203)
+            print(300)
         else
             print(400)
             GameName = nil
