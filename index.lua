@@ -196,11 +196,9 @@ TicTacToe = {
 }
 
 function HandleGame(ArenaWorkspace, GameName)
-    print("work")
     if GameName == "Rush Tic Tac Toe" or
         GameName == "Tic Tac Toe"
     then  
-        print("working ogod")
         local board = TicTacToe:uiToBoard(ArenaWorkspace, GameName)
         local bestMove = TicTacToe:bestMove(board.board, board.teamColor)
         TicTacToe:doMove(GameName, bestMove)
@@ -337,11 +335,11 @@ function SearchForRoom()
     return nil
 end
 
-local GameName = nil
+--local GameName = nil
+local GameName = "Tic Tac Toe"
 while task.wait(1) do
     local ArenaWorkspace = FindLocalArena()
 
-    print(1, ArenaWorkspace)
     if ArenaWorkspace then
         HandleGame(ArenaWorkspace, GameName)
     else
