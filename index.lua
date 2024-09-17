@@ -397,6 +397,7 @@ while true do
     end
 end]]
 
+print(0)
 while true do
     task.wait(1)
 
