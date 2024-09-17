@@ -276,25 +276,27 @@ function GetRooms()
 
     local RoomsFrames = RoomsFrame:GetChildren()
     for _, RoomFrame in ipairs(RoomsFrames) do
-        if RoomFrame:IsA("Frame") then
-            local DataFrame = RoomFrame.Inside
-
-            if DataFrame:FindFirstChild("Spectate") then
-                continue
-            end
-
-            local GameName = DataFrame.GameName.Text
-            local PlayerName = string.sub(DataFrame.DisplayName.Text, 11)
-            local Robux = tonumber(DataFrame.Join.Amount.Text)
-            local JoinButton = DataFrame.Join
-
-            table.insert(Rooms, {
-                ["GameName"] = GameName,
-                ["PlayerName"] = PlayerName,
-                ["Robux"] = Robux,
-                ["JoinButton"] = JoinButton
-            })
+        if not RoomFrame:IsA("Frame") then
+            continue
         end
+
+        local DataFrame = RoomFrame.Inside
+
+        if DataFrame:FindFirstChild("Spectate") then
+            continue
+        end
+
+        local GameName = DataFrame.GameName.Text
+        local PlayerName = string.sub(DataFrame.DisplayName.Text, 11)
+        local Robux = tonumber(DataFrame.Join.Amount.Text)
+        local JoinButton = DataFrame.Join
+
+        table.insert(Rooms, {
+            ["GameName"] = GameName,
+            ["PlayerName"] = PlayerName,
+            ["Robux"] = Robux,
+            ["JoinButton"] = JoinButton
+        })
     end
 
     return Rooms
