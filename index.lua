@@ -56,100 +56,91 @@ function FindLocalArena()
 end
 
 TicTacToe = {
-    checkWinner = function(self, state)
-        local winning_combinations = {
+    checkWinner = function(self, board)
+        local win_combinations = {
             {1, 2, 3}, {4, 5, 6}, {7, 8, 9},
             {1, 4, 7}, {2, 5, 8}, {3, 6, 9},
             {1, 5, 9}, {3, 5, 7}
         }
-
-        for _, combo in ipairs(winning_combinations) do
-            local a, b, c = combo[1], combo[2], combo[3]
-            if state[a] ~= "_" and state[a] == state[b] and state[a] == state[c] then
-                return state[a]
-            end
-        end
-
-        return nil
-    end,
-
-    -- Function to check if the board is full (a draw)
-    isFull = function(self, state)
-        for i = 1, 9 do
-            if state[i] == "_" then
-                return false
-            end
-        end
-        return true
-    end,
-
-    minimax = function(self, state, depth, is_maximizing, player)
-        local winner = self:checkWinner(state)
-        local opponent = player == "X" and "O" or "X"
-        
-        if winner == player then return 10 - depth end
-        if winner == opponent then return depth - 10 end
-        if self:isFull(state) then return 0 end
-
-        if is_maximizing then
-            local best_score = -math.huge
-            for i = 1, 9 do
-                if state[i] == "_" then
-                    state[i] = player
-                    local score = self:minimax(state, depth + 1, false, player)
-                    state[i] = "_"
-                    best_score = math.max(score, best_score)
-                    if best_score == 10 - depth then return best_score end
-                end
-            end
-            return best_score
-        else
-            local best_score = math.huge
-            for i = 1, 9 do
-                if state[i] == "_" then
-                    state[i] = opponent
-                    local score = self:minimax(state, depth + 1, true, player)
-                    state[i] = "_"
-                    best_score = math.min(score, best_score)
-                    if best_score == depth - 10 then return best_score end
-                end
-            end
-            return best_score
-        end
-    end,
-
-    bestMove = function(self, state, player)
-        local emptySpots = 0
-        for i = 1, 9 do
-            if state[i] == "_" then
-                emptySpots += 1
+    
+        for _, combination in ipairs(win_combinations) do
+            if board[combination[1]] == board[combination[2]] and 
+               board[combination[2]] == board[combination[3]] and 
+               board[combination[1]] ~= "_" then
+                return board[combination[1]]
             end
         end
     
-        if emptySpots == 9 then
-            --local corners = {1, 3, 7, 9}
-            
-            --return corners[math.random(#corners)]
-            return 5
-        end
-
-        
-        local best_score = -math.huge
-        local move = nil
-        
+        return nil
+    end,
+    
+    isMovesLeft = function(self, board)
         for i = 1, 9 do
-            if state[i] == "_" then
-                state[i] = player
-                local score = self:minimax(state, 0, false, player)
-                state[i] = "_"
-                if score > best_score then
-                    best_score = score
-                    move = i
+            if board[i] == "_" then
+                return true
+            end
+        end
+        return false
+    end,
+    
+    minimax = function(self, board, depth, isMaximizingPlayer, alpha, beta, player)
+        local opponent = (player == "X") and "O" or "X"
+        local winner = self:checkWinner(board)
+        
+        if winner == player then
+            return 10 - depth
+        elseif winner == opponent then
+            return depth - 10
+        elseif not isMovesLeft(board) then
+            return 0
+        end
+    
+        if isMaximizingPlayer then
+            local best = -math.huge
+            for i = 1, 9 do
+                if board[i] == "_" then
+                    board[i] = player
+                    best = math.max(best, self:minimax(board, depth + 1, false, alpha, beta, player))
+                    board[i] = "_"
+                    alpha = math.max(alpha, best)
+                    if beta <= alpha then
+                        break
+                    end
+                end
+            end
+            return best
+        else
+            local best = math.huge
+            for i = 1, 9 do
+                if board[i] == "_" then
+                    board[i] = opponent
+                    best = math.min(best, self:minimax(board, depth + 1, true, alpha, beta, player))
+                    board[i] = "_"
+                    beta = math.min(beta, best)
+                    if beta <= alpha then
+                        break
+                    end
+                end
+            end
+            return best
+        end
+    end,
+    
+    bestMove = function(self, board, player)
+        local bestVal = -math.huge
+        local bestMove = -1
+        for i = 1, 9 do
+            if board[i] == "_" then
+                board[i] = player
+                local moveVal = self:minimax(board, 0, false, -math.huge, math.huge, player)
+                board[i] = "_"
+                if moveVal > bestVal then
+                    bestMove = i
+                    bestVal = moveVal
                 end
             end
         end
-        
-        return move
+        return bestMove
     end,
 
     getIndexFromName = function(self, name)
@@ -234,7 +225,6 @@ TicTacToe = {
 function HandleGame(ArenaWorkspace, GameName)
     if GameName == "Rush Tic Tac Toe" or
         GameName == "Tic Tac Toe" then
-    --if GameName == "Tic Tac Toe" then  
         if not TicTacToe:isMyTurn(GameName) then
             return
         end
@@ -397,8 +387,6 @@ while true do
     local ArenaWorkspace = FindLocalArena()
 
     if ArenaWorkspace then
-        print(1)
         HandleGame(ArenaWorkspace, "Tic Tac Toe")
-        print(2)
     end
 end
