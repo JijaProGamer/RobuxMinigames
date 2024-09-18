@@ -56,15 +56,6 @@ function FindLocalArena()
 end
 
 TicTacToe = {
-    isMovesLeft = function(self, board)
-        for i = 1, 9 do
-            if board[i] == "_" then
-                return true
-            end
-        end
-        return false
-    end,
-
     getIndexFromName = function(self, name)
         local row = tonumber(string.sub(name, 1, 1))
         local col = 4 - tonumber(string.sub(name, 2, 2))
@@ -144,7 +135,9 @@ TicTacToe = {
 
     rowCrossed = function(self, board)
         for i = 1, 3 do
-            if board[i][1] == board[i][2] and board[i][2] == board[i][3] and board[i][1] ~= ' ' then
+            if board[(i - 1) * 3 + 1] == board[(i - 1) * 3 + 2] and 
+               board[(i - 1) * 3 + 2] == board[(i - 1) * 3 + 3] and
+               board[(i - 1) * 3 + 1] ~= "_" then
                 return true
             end
         end
@@ -153,7 +146,9 @@ TicTacToe = {
 
     columnCrossed = function(self, board)
         for i = 1, 3 do
-            if board[1][i] == board[2][i] and board[2][i] == board[3][i] and board[1][i] ~= ' ' then
+            if board[i] == board[i + 3] and 
+               board[i + 3] == board[i + 6] and
+               board[i] ~= "_" then
                 return true
             end
         end
@@ -161,12 +156,18 @@ TicTacToe = {
     end,
 
     diagonalCrossed = function(self, board)
-        if board[1][1] == board[2][2] and board[2][2] == board[3][3] and board[1][1] ~= ' ' then
+        if board[1] == board[5] and 
+           board[5] == board[9] and 
+           board[1] ~= "_" then
             return true
         end
-        if board[1][3] == board[2][2] and board[2][2] == board[3][1] and board[1][3] ~= ' ' then
+    
+        if board[3] == board[5] and 
+           board[5] == board[7] and 
+           board[3] ~= "_" then
             return true
         end
+    
         return false
     end,
 
@@ -174,89 +175,67 @@ TicTacToe = {
         return self:rowCrossed(board) or self:columnCrossed(board) or self:diagonalCrossed(board)
     end,
 
-    minimax = function(self, board, depth, isAI)
-        local function evaluateBoard()
-            if self:gameOver(board) then
-                return isAI and -1 or 1
+    minimax = function(self, board, depth, isAI, playerSymbol, opponentSymbol)
+        local score = 0
+        local bestScore
+        if self:gameOver(board) then
+            if isAI then
+                return -1
+            else
+                return 1
             end
+        elseif depth >= 9 then
             return 0
         end
-
-        local score = evaluateBoard()
-        if score ~= 0 then
-            return score
-        end
-
-        local isMovesLeft = false
-        for i = 1, 3 do
-            for j = 1, 3 do
-                if board[i][j] == ' ' then
-                    isMovesLeft = true
-                end
-            end
-        end
-
-        if not isMovesLeft then
-            return 0
-        end
-
-        local bestScore = isAI and -math.huge or math.huge
-
-        for i = 1, 3 do
-            for j = 1, 3 do
-                if board[i][j] == ' ' then
-                    board[i][j] = isAI and 'O' or 'X'
-                    local score = self:minimax(board, depth + 1, not isAI)
-                    board[i][j] = ' '
-                    if isAI then
-                        bestScore = math.max(bestScore, score)
-                    else
-                        bestScore = math.min(bestScore, score)
+    
+        if isAI then
+            bestScore = -999
+            for i = 1, 9 do
+                if board[i] == "_" then
+                    board[i] = playerSymbol
+                    score = self:minimax(board, depth + 1, false, playerSymbol, opponentSymbol)
+                    board[i] = "_"
+                    if score > bestScore then
+                        bestScore = score
                     end
                 end
             end
+            return bestScore
+        else
+            bestScore = 999
+            for i = 1, 9 do
+                if board[i] == "_" then
+                    board[i] = opponentSymbol
+                    score = self:minimax(board, depth + 1, true, playerSymbol, opponentSymbol)
+                    board[i] = "_"
+                    if score < bestScore then
+                        bestScore = score
+                    end
+                end
+            end
+            return bestScore
         end
-
-        return bestScore
     end,
 
-    bestMove = function(self, board, player)
-        local function to2D(board)
-            local b = {}
-            for i = 1, 3 do
-                b[i] = {}
-                for j = 1, 3 do
-                    b[i][j] = board[(i - 1) * 3 + j]
+    bestMove = function(self, board, playerSymbol)
+        local opponentSymbol = playerSymbol == "X" and "O" or "X"
+        local x, y
+        local bestScore = -999
+        local bestMove = -1
+    
+        for i = 1, 9 do
+            if board[i] == "_" then
+                board[i] = playerSymbol
+                local score = self:minimax(board, 0, false, playerSymbol, opponentSymbol)
+                board[i] = "_"
+                if score > bestScore then
+                    bestScore = score
+                    bestMove = i
                 end
             end
-            return b
         end
-
-        local function findBestMove()
-            local bestMove = nil
-            local bestValue = -math.huge
-            local isAI = (player == 'O')
-
-            for i = 1, 3 do
-                for j = 1, 3 do
-                    if board[i][j] == ' ' then
-                        board[i][j] = 'O'
-                        local moveValue = self:minimax(board, 0, false)
-                        board[i][j] = ' '
-                        if moveValue > bestValue then
-                            bestMove = {i, j}
-                            bestValue = moveValue
-                        end
-                    end
-                end
-            end
-
-            return bestMove
-        end
-
-        local board2D = to2D(board)
-        local move = findBestMove()
-        return move and (move[1] - 1) * 3 + move[2] or nil
+    
+        return bestMove
     end
 }
 
@@ -269,6 +248,7 @@ function HandleGame(ArenaWorkspace, GameName)
         end
 
         local board = TicTacToe:uiToBoard(ArenaWorkspace, GameName)
+        print(board.teamColor)
         local bestMove = TicTacToe:bestMove(board.board, board.teamColor)
         TicTacToe:doMove(GameName, bestMove)
     end
