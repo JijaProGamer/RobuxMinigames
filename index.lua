@@ -176,24 +176,23 @@ TicTacToe = {
     end,
 
     minimax = function(self, board, depth, isAI, playerSymbol, opponentSymbol)
-        local score = 0
-        local bestScore
         if self:gameOver(board) then
             if isAI then
-                return -1
+                return -10 + depth  -- Favor shorter paths to victory
             else
-                return 1
+                return 10 - depth   -- Favor shorter paths to loss
             end
-        elseif depth >= 9 then
+        elseif not self:isMovesLeft(board) then
             return 0
         end
     
+        local bestScore
         if isAI then
-            bestScore = -999
+            bestScore = -math.huge
             for i = 1, 9 do
                 if board[i] == "_" then
                     board[i] = playerSymbol
-                    score = self:minimax(board, depth + 1, false, playerSymbol, opponentSymbol)
+                    local score = self:minimax(board, depth + 1, false, playerSymbol, opponentSymbol)
                     board[i] = "_"
                     if score > bestScore then
                         bestScore = score
@@ -202,11 +201,11 @@ TicTacToe = {
             end
             return bestScore
         else
-            bestScore = 999
+            bestScore = math.huge
             for i = 1, 9 do
                 if board[i] == "_" then
                     board[i] = opponentSymbol
-                    score = self:minimax(board, depth + 1, true, playerSymbol, opponentSymbol)
+                    local score = self:minimax(board, depth + 1, true, playerSymbol, opponentSymbol)
                     board[i] = "_"
                     if score < bestScore then
                         bestScore = score
@@ -219,11 +218,8 @@ TicTacToe = {
 
     bestMove = function(self, board, playerSymbol)
         local opponentSymbol = playerSymbol == "X" and "O" or "X"
-        local x, y
-        local bestScore = -999
+        local bestScore = -math.huge
         local bestMove = -1
-
-        print(playerSymbol.." "..opponentSymbol)
     
         for i = 1, 9 do
             if board[i] == "_" then
