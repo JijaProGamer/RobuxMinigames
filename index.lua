@@ -232,16 +232,6 @@ TicTacToe = {
             return b
         end
 
-        local function to1D(board)
-            local b = {}
-            for i = 1, 3 do
-                for j = 1, 3 do
-                    b[(i - 1) * 3 + j] = board[i][j]
-                end
-            end
-            return b
-        end
-
         local function findBestMove()
             local bestMove = nil
             local bestValue = -math.huge
@@ -264,7 +254,7 @@ TicTacToe = {
             return bestMove
         end
 
-        local board2D = self:to2D(board)
+        local board2D = to2D(board)
         local move = findBestMove()
         return move and (move[1] - 1) * 3 + move[2] or nil
     end
