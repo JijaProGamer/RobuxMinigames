@@ -248,6 +248,7 @@ function HandleGame(ArenaWorkspace, GameName)
         end
 
         local board = TicTacToe:uiToBoard(ArenaWorkspace, GameName)
+        print(board.teamColor)
         local bestMove = TicTacToe:bestMove(board.board, board.teamColor)
         TicTacToe:doMove(GameName, bestMove)
     end
