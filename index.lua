@@ -83,7 +83,7 @@ TicTacToe = {
         return false
     end,
     
-    minimax = function(self, board, depth, isMaximizingPlayer, alpha, beta, player)
+    minimax = function(self, board, depth, isMaximizingPlayer, player)
         local opponent = (player == "X") and "O" or "X"
         local winner = self:checkWinner(board)
         
@@ -100,12 +100,8 @@ TicTacToe = {
             for i = 1, 9 do
                 if board[i] == "_" then
                     board[i] = player
-                    best = math.max(best, self:minimax(board, depth + 1, false, alpha, beta, player))
+                    best = math.max(best, self:minimax(board, depth + 1, false, player))
                     board[i] = "_"
-                    alpha = math.max(alpha, best)
-                    if beta <= alpha then
-                        break
-                    end
                 end
             end
             return best
@@ -114,12 +110,8 @@ TicTacToe = {
             for i = 1, 9 do
                 if board[i] == "_" then
                     board[i] = opponent
-                    best = math.min(best, self:minimax(board, depth + 1, true, alpha, beta, player))
+                    best = math.min(best, self:minimax(board, depth + 1, true, player))
                     board[i] = "_"
-                    beta = math.min(beta, best)
-                    if beta <= alpha then
-                        break
-                    end
                 end
             end
             return best
@@ -132,7 +124,7 @@ TicTacToe = {
         for i = 1, 9 do
             if board[i] == "_" then
                 board[i] = player
-                local moveVal = self:minimax(board, 0, false, -math.huge, math.huge, player)
+                local moveVal = self:minimax(board, 0, false, player)
                 board[i] = "_"
                 if moveVal > bestVal then
                     bestMove = i
@@ -212,7 +204,6 @@ TicTacToe = {
             return
         end
     
-    
         local buttons = getChildrenOfClass(boardUI["Bottom Middle"].Buttons, "TextButton")
         if not buttons[move] then
             return
@@ -221,6 +212,7 @@ TicTacToe = {
         PressButton(buttons[move])
     end
 }
+
 
 function HandleGame(ArenaWorkspace, GameName)
     if GameName == "Rush Tic Tac Toe" or
