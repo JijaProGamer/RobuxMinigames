@@ -105,22 +105,26 @@ TicTacToe = {
     end,
     
     bestMove = function(self, board, player)
+        local bestScore = -math.huge
         local move = -1
-        local score = -2
-        
+        local opponent = (player == "X") and "O" or "X"
+    
         for i = 1, 9 do
             if board[i] == "_" then
                 board[i] = player
-                local tempScore = -self:minimax(board, (player == "X") and "O" or "X")
+                local score = self:minimax(board, opponent)
                 board[i] = "_"
-                if tempScore > score then
-                    score = tempScore
+    
+                if score > bestScore then
+                    bestScore = score
                     move = i
                 end
             end
         end
+    
         return move
     end,
+    
     
     isMovesLeft = function(self, board)
         for i = 1, 9 do
