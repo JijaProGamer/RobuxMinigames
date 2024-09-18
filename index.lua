@@ -91,7 +91,7 @@ TicTacToe = {
             return 10 - depth
         elseif winner == opponent then
             return depth - 10
-        elseif not isMovesLeft(board) then
+        elseif not self:isMovesLeft(board) then
             return 0
         end
     
