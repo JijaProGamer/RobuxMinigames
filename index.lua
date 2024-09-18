@@ -57,21 +57,59 @@ end
 
 TicTacToe = {
     checkWinner = function(self, board)
-        local win_combinations = {
+        local wins = {
             {1, 2, 3}, {4, 5, 6}, {7, 8, 9},
             {1, 4, 7}, {2, 5, 8}, {3, 6, 9},
             {1, 5, 9}, {3, 5, 7}
         }
-    
-        for _, combination in ipairs(win_combinations) do
-            if board[combination[1]] == board[combination[2]] and 
-               board[combination[2]] == board[combination[3]] and 
-               board[combination[1]] ~= "_" then
-                return board[combination[1]]
+        
+        for _, win in ipairs(wins) do
+            if board[win[1]] ~= "_" and board[win[1]] == board[win[2]] and board[win[2]] == board[win[3]] then
+                return board[win[1]]
             end
         end
-    
         return nil
+    end,
+    
+    minimax = function(self, board, player)
+        local winner = self:checkWinner(board)
+        if winner then
+            return winner == player and 1 or -1
+        end
+
+        local move = -1
+        local score = -2
+
+        for i = 1, 9 do
+            if board[i] == "_" then
+                board[i] = player
+                local tempScore = -self:minimax(board, (player == "X") and "O" or "X")
+                if tempScore > score then
+                    score = tempScore
+                    move = i
+                end
+                board[i] = "_"
+            end
+        end
+        return move == -1 and 0 or score
+    end,
+    
+    bestMove = function(self, board, player)
+        local move = -1
+        local score = -2
+        
+        for i = 1, 9 do
+            if board[i] == "_" then
+                board[i] = player
+                local tempScore = -self:minimax(board, (player == "X") and "O" or "X")
+                board[i] = "_"
+                if tempScore > score then
+                    score = tempScore
+                    move = i
+                end
+            end
+        end
+        return move
     end,
     
     isMovesLeft = function(self, board)
@@ -81,83 +119,6 @@ TicTacToe = {
             end
         end
         return false
-    end,
-    
-    minimax = function(self, board, depth, isMaximizingPlayer, player)
-        local opponent = (player == "X") and "O" or "X"
-        local winner = self:checkWinner(board)
-        
-        if winner == player then
-            return 10 - depth
-        elseif winner == opponent then
-            return depth - 10
-        elseif not self:isMovesLeft(board) then
-            return 0
-        end
-    
-        if isMaximizingPlayer then
-            local best = -math.huge
-            for i = 1, 9 do
-                if board[i] == "_" then
-                    board[i] = player
-                    best = math.max(best, self:minimax(board, depth + 1, false, player))
-                    board[i] = "_"
-                end
-            end
-            return best
-        else
-            local best = math.huge
-            for i = 1, 9 do
-                if board[i] == "_" then
-                    board[i] = opponent
-                    best = math.min(best, self:minimax(board, depth + 1, true, player))
-                    board[i] = "_"
-                end
-            end
-            return best
-        end
-    end,
-    
-    bestMove = function(self, board, player)
-        local opponent = (player == "X") and "O" or "X"
-    
-        for i = 1, 9 do
-            if board[i] == "_" then
-                board[i] = player
-                if self:checkWinner(board) == player then
-                    board[i] = "_"
-                    return i 
-                end
-                board[i] = "_"
-            end
-        end
-    
-        for i = 1, 9 do
-            if board[i] == "_" then
-                board[i] = opponent
-                if self:checkWinner(board) == opponent then
-                    board[i] = "_"
-                    return i
-                end
-                board[i] = "_"
-            end
-        end
-    
-        local bestVal = -math.huge
-        local bestMove = -1
-        for i = 1, 9 do
-            if board[i] == "_" then
-                board[i] = player
-                local moveVal = self:minimax(board, 0, false, player)
-                board[i] = "_"
-                if moveVal > bestVal then
-                    bestMove = i
-                    bestVal = moveVal
-                end
-            end
-        end
-    
-        return bestMove
     end,
 
     getIndexFromName = function(self, name)
