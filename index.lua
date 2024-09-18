@@ -222,6 +222,8 @@ TicTacToe = {
         local x, y
         local bestScore = -999
         local bestMove = -1
+
+        print(playerSymbol.." "..opponentSymbol)
     
         for i = 1, 9 do
             if board[i] == "_" then
@@ -248,7 +250,6 @@ function HandleGame(ArenaWorkspace, GameName)
         end
 
         local board = TicTacToe:uiToBoard(ArenaWorkspace, GameName)
-        print(board.teamColor)
         local bestMove = TicTacToe:bestMove(board.board, board.teamColor)
         TicTacToe:doMove(GameName, bestMove)
     end
