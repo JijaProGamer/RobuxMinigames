@@ -119,19 +119,30 @@ TicTacToe = {
     end,
     
     bestMove = function(self, board, player)
-        local isBoardEmpty = true
+        local opponent = (player == "X") and "O" or "X"
+    
         for i = 1, 9 do
-            if board[i] ~= "_" then
-                isBoardEmpty = false
-                break
+            if board[i] == "_" then
+                board[i] = player
+                if self:checkWinner(board) == player then
+                    board[i] = "_"
+                    return i 
+                end
+                board[i] = "_"
             end
         end
-
-        if isBoardEmpty then
-            local preferredMoves = {1, 3, 5, 7, 9}
-            return preferredMoves[math.random(#preferredMoves)]
+    
+        for i = 1, 9 do
+            if board[i] == "_" then
+                board[i] = opponent
+                if self:checkWinner(board) == opponent then
+                    board[i] = "_"
+                    return i
+                end
+                board[i] = "_"
+            end
         end
-
+    
         local bestVal = -math.huge
         local bestMove = -1
         for i = 1, 9 do
@@ -145,6 +156,7 @@ TicTacToe = {
                 end
             end
         end
+    
         return bestMove
     end,
 
