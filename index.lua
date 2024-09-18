@@ -133,6 +133,15 @@ TicTacToe = {
         PressButton(buttons[move])
     end,
 
+    isMovesLeft = function(self, board)
+        for i = 1, 9 do
+            if board[i] == "_" then
+                return true
+            end
+        end
+        return false
+    end,
+
     rowCrossed = function(self, board)
         for i = 1, 3 do
             if board[(i - 1) * 3 + 1] == board[(i - 1) * 3 + 2] and 
@@ -178,9 +187,9 @@ TicTacToe = {
     minimax = function(self, board, depth, isAI, playerSymbol, opponentSymbol)
         if self:gameOver(board) then
             if isAI then
-                return -10 + depth  -- Favor shorter paths to victory
+                return -10 + depth
             else
-                return 10 - depth   -- Favor shorter paths to loss
+                return 10 - depth
             end
         elseif not self:isMovesLeft(board) then
             return 0
