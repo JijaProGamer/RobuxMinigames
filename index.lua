@@ -119,6 +119,19 @@ TicTacToe = {
     end,
     
     bestMove = function(self, board, player)
+        local isBoardEmpty = true
+        for i = 1, 9 do
+            if board[i] ~= "_" then
+                isBoardEmpty = false
+                break
+            end
+        end
+
+        if isBoardEmpty then
+            local preferredMoves = {1, 3, 5, 7, 9}
+            return preferredMoves[math.random(#preferredMoves)]
+        end
+
         local bestVal = -math.huge
         local bestMove = -1
         for i = 1, 9 do
