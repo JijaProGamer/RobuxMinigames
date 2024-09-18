@@ -235,19 +235,13 @@ function HandleGame(ArenaWorkspace, GameName)
     if GameName == "Rush Tic Tac Toe" or
         GameName == "Tic Tac Toe" then
     --if GameName == "Tic Tac Toe" then  
-        print(100)
         if not TicTacToe:isMyTurn(GameName) then
-            print(101)
             return
         end
-        print(102)
 
         local board = TicTacToe:uiToBoard(ArenaWorkspace, GameName)
-        print(103)
         local bestMove = TicTacToe:bestMove(board.board, board.teamColor)
-        print(104)
         TicTacToe:doMove(GameName, bestMove)
-        print(105)
     end
 end
 
