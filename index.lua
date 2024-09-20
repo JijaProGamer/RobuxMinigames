@@ -327,6 +327,7 @@ local function filterGamepassesByPrice(gamepasses, price)
     local filteredGamepasses = {}
 
     for _, gamepass in ipairs(gamepasses) do
+        print(gamepass.price)
         if gamepass.price == price then
             table.insert(filteredGamepasses, gamepass)
         end
