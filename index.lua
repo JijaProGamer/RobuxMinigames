@@ -344,7 +344,7 @@ function filterGamepassesByPrice(price)
 
     for _, gamepass in ipairs(PlayerGamepasses) do
         if gamepass.price == price then
-            table.insert(filteredGamepasses, gamepass.price)
+            table.insert(filteredGamepasses, gamepass.assetId)
         end
     end
 
