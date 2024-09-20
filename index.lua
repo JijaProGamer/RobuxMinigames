@@ -300,7 +300,7 @@ function getPlayerGames(userId)
     return gamesCreated
 end
 
-local function getGamepassesForGame(gameId)
+function getGamepassesForGame(gameId)
     local gamepasses = {}
     local url = "https://games.roblox.com/v1/games/" .. gameId .. "/game-passes?limit=100&sortOrder=Asc"
 
@@ -323,14 +323,10 @@ local function getGamepassesForGame(gameId)
     return gamepasses
 end
 
-local function filterGamepassesByPrice(gamepasses, price)
+function filterGamepassesByPrice(gamepasses, price)
     local filteredGamepasses = {}
 
     for _, gamepass in ipairs(gamepasses) do
-        print("gamepass price "..gamepass.price)
-        print("price "..price)
-        print("needed "..(tostring(gamepass.price == price)))
-
         if gamepass.price == price then
             table.insert(filteredGamepasses, gamepass)
         end
@@ -345,7 +341,7 @@ function listPlayerGamepasses(price)
     local gamesCreated = getPlayerGames()
 
     for _, gameId in ipairs(gamesCreated) do
-        local gamepasses = filterGamepassesByPrice(getGamepassesForGame(gameId))
+        local gamepasses = filterGamepassesByPrice(getGamepassesForGame(gameId), price)
         for _, gamepass in ipairs(gamepasses) do
             table.insert(listMadeGamepasses, gamepass.assetId)
         end
