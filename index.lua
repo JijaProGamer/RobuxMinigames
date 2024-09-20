@@ -302,7 +302,7 @@ end
 
 local function getGamepassesForGame(gameId)
     local gamepasses = {}
-    local url = "https://games.roblox.com/v1/games/" .. gameId .. "/game-passes"
+    local url = "https://games.roblox.com/v1/games/" .. gameId .. "/game-passes?limit=100&sortOrder=Asc"
 
     local success, result = pcall(function()
         return game:HttpGet(url)
