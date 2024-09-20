@@ -1,12 +1,21 @@
-local LocalPlayer = game:GetService("Players").LocalPlayer
+
+local Players = game:GetService("Players")
+local MarketplaceService = game:GetService("MarketplaceService")
+local HttpService = game:GetService("HttpService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local localPlayer = Players.LocalPlayer
+
 local PlayerGui = LocalPlayer.PlayerGui
 
 local Arenas = workspace.ArenasREAL
 
 local LobbyMain = PlayerGui.Lobby_Main
 local PlayButton = LobbyMain["Bottom Middle"].Start
-local RoomsParentFrame = PlayerGui.ViewRooms["Middle Middle"].ViewRooms
-local RoomsFrame = RoomsParentFrame.Background.PlayerList.Objects
+local RoomsParentFrame = PlayerGui.ViewRooms["Middle Middle"].ViewRooms.Background
+local RoomsFrame = RoomsParentFrame.PlayerList.Objects
+local CreateRoomsRemote = ReplicatedStorage.RemoteCalls.GameSpecific.Tickets.CreateRoom
+
 
 function PressButton(button)
     for _, connection in pairs(getconnections(button.MouseButton1Click)) do
@@ -262,52 +271,112 @@ end
 
 local MinRobux = 1
 local MaxRobux = 1
-local RobuxChoses = {
+local RobuxModes = {
     0,
-    10,
-    20,
-    30, 
-    40,
-    50,
-    100,
-    150,
-    200,
-    300,
-    400,
-    500,
-    1000,
-    2000,
-    3000,
-    5000,
-    10000,
-    100000,
-    1000000,
-    500000
+    --10,
 }
 local GamesDoable = {
-    "Rush Tic Tac Toe",
-    "Tic Tac Toe"
+    "TicTacToe"
 }
 
-function GetRobuxModesDoable()
+function getPlayerGames(userId)
+    local gamesCreated = {}
+    local url = "https://games.roblox.com/v2/users/" .. localPlayer.UserId .. "/games?sortOrder=Asc&limit=100"
 
-    for i = MinRobux, MaxRobux do
-        local RobuxValue = RobuxChoses[i]
+    local success, result = pcall(function()
+        return game:HttpGet(url)
+    end)
 
-
+    if success then
+        local response = HttpService:JSONDecode(result)
+        for _, game in ipairs(response.data) do
+            table.insert(gamesCreated, game.id)
+        end
+    else
+        warn("Error fetching player games")
     end
+    
+    return gamesCreated
 end
 
-function GotoMode()
+local function getGamepassesForGame(gameId)
+    local gamepasses = {}
+    local url = "https://games.roblox.com/v1/games/" .. gameId .. "/game-passes"
 
+    local success, result = pcall(function()
+        return game:HttpGet(url)
+    end)
+
+    if success then
+        local response = HttpService:JSONDecode(result)
+        for _, gamepass in ipairs(response.data) do
+            table.insert(gamepasses, {
+                assetId = gamepass.id,
+                price = MarketplaceService:GetProductInfo(gamepass.id).PriceInRobux,
+                name = gamepass.name
+            })
+        end
+    else
+        warn("Error fetching gamepasses for game:", gameId)
+    end
+    
+    return gamepasses
+end
+
+local function filterGamepassesByPrice(gamepasses, price)
+    local filteredGamepasses = {}
+
+    for _, gamepass in ipairs(gamepasses) do
+        if gamepass.price == price then
+            table.insert(filteredGamepasses, gamepass)
+        end
+    end
+
+    return filteredGamepasses
+end
+
+function listPlayerGamepasses(price)
+    local userId = localPlayer.UserId
+    local listMadeGamepasses = {}
+    
+    local gamesCreated = getPlayerGames(userId)
+
+    for _, gameId in ipairs(gamesCreated) do
+        local gamepasses = filterGamepassesByPrice(getGamepassesForGame(gameId))
+        for _, gamepass in ipairs(gamepasses) do
+            table.insert(listMadeGamepasses, gamepass.assetId)
+        end
+    end
+
+    return listMadeGamepasses
 end
 
 function MakeGame()
-    local ModeChosen = GamesDoable[math.random(1, #GamesDoable)];
+    local ModeChosen = GamesDoable[math.random(1, #GamesDoable)]
 
+    --local PossibleRobuxModes = GetRobuxModesDoable()
+
+    --if #PossibleRobuxModes == 0 then
+    --    return nil
+    --end
+
+    local RobuxChosen = PossibleRobuxModes[math.random(1, #PossibleRobuxModes)]
+
+    local PossibleAvailableGamepasses = listPlayerGamepasses()
+
+    if #PossibleAvailableGamepasses == 0 then
+        return nil
+    end
+
+    local AvailableProduct = PossibleAvailableGamepasses[math.random(1, #PossibleAvailableProducts)]
     
-    --local RobuxChosen = 
+    CreateRoomsRemote:InvokeServer(
+        ModeChosen, 
+        RobuxChosen, 
+        {["assetType"] = "GamePass", ["assetId"] = tostring(AvailableProduct)},
+    true)
 
+    return ModeChosen
 end
 
 function GetRooms()
@@ -381,6 +450,10 @@ function SearchForRoom()
     return nil
 end
 
+
+
+MakeGame()
+
 --[[local GameName = nil
 local Started = false
 
@@ -394,19 +467,20 @@ while true do
         Started = false
     else
         if not Started then
-            local CurrentGameName = SearchForRoom()
+            --local CurrentGameName = SearchForRoom()
 
-            if CurrentGameName then
-                GameName = CurrentGameName
-                Started = true
-            else 
-                MakeGame()
-            end
+            --if CurrentGameName then
+            --    GameName = CurrentGameName
+            --    Started = true
+            --else 
+                GameName = MakeGame()
+                Started = false
+            --end
         end
     end
 end]]
 
-while true do
+--[[while true do
     task.wait(1)
 
     local ArenaWorkspace = FindLocalArena()
@@ -414,4 +488,4 @@ while true do
     if ArenaWorkspace then
         HandleGame(ArenaWorkspace, "Tic Tac Toe")
     end
-end
+end]]
