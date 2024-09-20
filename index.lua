@@ -363,8 +363,6 @@ end
 
 listPlayerGamepasses()
 
-printTable(PlayerGamepasses)
-
 function MakeGame()
     local ModeChosen = GamesDoable[math.random(1, #GamesDoable)]
 
@@ -372,7 +370,7 @@ function MakeGame()
 
     local PossibleAvailableGamepasses = filterGamepassesByPrice(RobuxChosen)
 
-    print(#PossibleAvailableGamepasses)
+    printTable(PossibleAvailableGamepasses)
 
     if #PossibleAvailableGamepasses == 0 then
         return nil
