@@ -338,10 +338,10 @@ function getGamepassesForGame(gameId)
     return gamepasses
 end
 
-function filterGamepassesByPrice(gamepasses, price)
+function filterGamepassesByPrice(price)
     local filteredGamepasses = {}
 
-    for _, gamepass in ipairs(gamepasses) do
+    for _, gamepass in ipairs(PlayerGamepasses) do
         if gamepass.price == price then
             table.insert(filteredGamepasses, gamepass)
         end
@@ -356,7 +356,7 @@ function listPlayerGamepasses()
     for _, gameId in ipairs(gamesCreated) do
         local gamepasses = getGamepassesForGame(gameId)
         for _, gamepass in ipairs(gamepasses) do
-            table.insert(PlayerGamepasses, gamepass.assetId)
+            table.insert(PlayerGamepasses, gamepass)
         end
     end
 end
@@ -370,7 +370,7 @@ function MakeGame()
 
     local RobuxChosen = RobuxModes[math.random(1, #RobuxModes)]
 
-    local PossibleAvailableGamepasses = listPlayerGamepasses()
+    local PossibleAvailableGamepasses = filterGamepassesByPrice(RobuxChosen)
 
     print(#PossibleAvailableGamepasses)
 
