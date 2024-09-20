@@ -370,8 +370,6 @@ function MakeGame()
 
     local PossibleAvailableGamepasses = filterGamepassesByPrice(RobuxChosen)
 
-    printTable(PossibleAvailableGamepasses)
-
     if #PossibleAvailableGamepasses == 0 then
         return nil
     end
@@ -468,9 +466,9 @@ end
 
 
 
-MakeGame()
+--MakeGame()
 
---[[local GameName = nil
+local GameName = nil
 local Started = false
 
 while true do
@@ -494,7 +492,7 @@ while true do
             --end
         end
     end
-end]]
+end
 
 --[[while true do
     task.wait(1)
