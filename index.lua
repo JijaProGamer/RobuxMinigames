@@ -488,7 +488,7 @@ while true do
             --    Started = true
             --else 
                 GameName = MakeGame()
-                Started = false
+                Started = true
             --end
         end
     end
