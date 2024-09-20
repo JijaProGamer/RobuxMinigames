@@ -382,7 +382,6 @@ function MakeGame()
 
     local AvailableProduct = PossibleAvailableGamepasses[math.random(1, #PossibleAvailableGamepasses)]
     
-    print(AvailableProduct)
     if RobuxChosen == 0 then
         CreateRoomsRemote:InvokeServer(
             ModeChosen, 
@@ -393,7 +392,7 @@ function MakeGame()
         CreateRoomsRemote:InvokeServer(
             ModeChosen, 
             RobuxChosen, 
-            {["assetType"] = "GamePass", ["assetId"] = tostring(AvailableProduct)},
+            {["assetType"] = "GamePass", ["assetId"] = AvailableProduct},
         true)
     end
 
