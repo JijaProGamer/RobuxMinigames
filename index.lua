@@ -344,7 +344,7 @@ function filterGamepassesByPrice(price)
 
     for _, gamepass in ipairs(PlayerGamepasses) do
         if gamepass.price == price then
-            table.insert(filteredGamepasses, gamepass)
+            table.insert(filteredGamepasses, gamepass.price)
         end
     end
 
@@ -382,7 +382,6 @@ function MakeGame()
 
     local AvailableProduct = PossibleAvailableGamepasses[math.random(1, #PossibleAvailableGamepasses)]
     
-    print(AvailableProduct)
     if RobuxChosen == 0 then
         CreateRoomsRemote:InvokeServer(
             ModeChosen, 
