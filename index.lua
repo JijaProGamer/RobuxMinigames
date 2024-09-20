@@ -1,12 +1,11 @@
 function printTable(tbl, indent)
-    indent = indent or 0  -- Default indentation level
-    local indentStr = string.rep("    ", indent)  -- Creates indentation with spaces
+    indent = indent or 0 
+    local indentStr = string.rep("    ", indent)
 
     for key, value in pairs(tbl) do
-        -- Format the key-value pair
         if type(value) == "table" then
             print(indentStr .. tostring(key) .. ":")
-            printTable(value, indent + 1)  -- Recursively print nested tables with increased indent
+            printTable(value, indent + 1)
         else
             print(indentStr .. tostring(key) .. ": " .. tostring(value))
         end
@@ -28,8 +27,9 @@ local LobbyMain = PlayerGui.Lobby_Main
 local PlayButton = LobbyMain["Bottom Middle"].Start
 local RoomsParentFrame = PlayerGui.ViewRooms["Middle Middle"].ViewRooms.Background
 local RoomsFrame = RoomsParentFrame.PlayerList.Objects
-local CreateRoomsRemote = ReplicatedStorage.RemoteCalls.GameSpecific.Tickets.CreateRoom
 
+local CreateRoomsRemote = ReplicatedStorage.RemoteCalls.GameSpecific.Tickets.CreateRoom
+local DestroyRoomsRemote = ReplicatedStorage.RemoteCalls.GameSpecific.Tickets.DestroyRoom
 
 function PressButton(button)
     for _, connection in pairs(getconnections(button.MouseButton1Click)) do
@@ -289,6 +289,7 @@ local RobuxModes = {
     --0,
     10,
 }
+local MaxCreationTime = 120
 local GamesDoable = {
     "TicTacToe"
 }
@@ -362,6 +363,11 @@ function listPlayerGamepasses()
 end
 
 listPlayerGamepasses()
+
+
+function DestroyGame()
+    DestroyRoomsRemote:InvokeServer()
+end
 
 function MakeGame()
     local ModeChosen = GamesDoable[math.random(1, #GamesDoable)]
@@ -470,6 +476,9 @@ end
 
 local GameName = nil
 local Started = false
+local CreationStart = os.clock()
+local SetGameStart = false
+local GameStart = os.clock()
 
 while true do
     task.wait(1)
@@ -479,6 +488,11 @@ while true do
     if ArenaWorkspace then
         HandleGame(ArenaWorkspace, GameName)
         Started = false
+
+        if not SetGameStart then
+            SetGameStart = true
+            GameStart = os.clock()
+        end
     else
         if not Started then
             --local CurrentGameName = SearchForRoom()
@@ -487,9 +501,21 @@ while true do
             --    GameName = CurrentGameName
             --    Started = true
             --else 
+                CreationStart = os.clock()
                 GameName = MakeGame()
                 Started = true
+                GameStart = false
             --end
+        else
+            if os.clock() > CreationStart + MaxCreationTime then
+                task.wait(15)
+                ArenaWorkspace = FindLocalArena()
+
+                if not ArenaWorkspace then
+                    Started = false
+                    DestroyGame()
+                end
+            end
         end
     end
 end
