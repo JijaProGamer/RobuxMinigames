@@ -1,3 +1,17 @@
+function printTable(tbl, indent)
+    indent = indent or 0  -- Default indentation level
+    local indentStr = string.rep("    ", indent)  -- Creates indentation with spaces
+
+    for key, value in pairs(tbl) do
+        -- Format the key-value pair
+        if type(value) == "table" then
+            print(indentStr .. tostring(key) .. ":")
+            printTable(value, indent + 1)  -- Recursively print nested tables with increased indent
+        else
+            print(indentStr .. tostring(key) .. ": " .. tostring(value))
+        end
+    end
+end
 
 local Players = game:GetService("Players")
 local MarketplaceService = game:GetService("MarketplaceService")
@@ -278,6 +292,7 @@ local RobuxModes = {
 local GamesDoable = {
     "TicTacToe"
 }
+local PlayerGamepasses = {}
 
 function getPlayerGames(userId)
     local gamesCreated = {}
@@ -335,20 +350,20 @@ function filterGamepassesByPrice(gamepasses, price)
     return filteredGamepasses
 end
 
-function listPlayerGamepasses(price)
-    local listMadeGamepasses = {}
-    
+function listPlayerGamepasses()    
     local gamesCreated = getPlayerGames()
 
     for _, gameId in ipairs(gamesCreated) do
-        local gamepasses = filterGamepassesByPrice(getGamepassesForGame(gameId), price)
+        local gamepasses = getGamepassesForGame(gameId)
         for _, gamepass in ipairs(gamepasses) do
-            table.insert(listMadeGamepasses, gamepass.assetId)
+            table.insert(PlayerGamepasses, gamepass.assetId)
         end
     end
-
-    return listMadeGamepasses
 end
+
+listPlayerGamepasses()
+
+printTable(PlayerGamepasses)
 
 function MakeGame()
     local ModeChosen = GamesDoable[math.random(1, #GamesDoable)]
