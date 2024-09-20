@@ -353,13 +353,7 @@ end
 function MakeGame()
     local ModeChosen = GamesDoable[math.random(1, #GamesDoable)]
 
-    --local PossibleRobuxModes = GetRobuxModesDoable()
-
-    --if #PossibleRobuxModes == 0 then
-    --    return nil
-    --end
-
-    local RobuxChosen = PossibleRobuxModes[math.random(1, #PossibleRobuxModes)]
+    local RobuxChosen = RobuxModes[math.random(1, #RobuxModes)]
 
     local PossibleAvailableGamepasses = listPlayerGamepasses()
 
