@@ -281,7 +281,7 @@ local GamesDoable = {
 
 function getPlayerGames(userId)
     local gamesCreated = {}
-    local url = "https://games.roblox.com/v2/users/" .. LocalPlayer.UserId .. "/games?sortOrder=Asc&limit=100"
+    local url = "https://games.roblox.com/v2/users/" .. LocalPlayer.UserId .. "/games?sortOrder=Asc&limit=50"
 
     local success, result = pcall(function()
         return game:HttpGet(url)
