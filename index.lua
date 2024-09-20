@@ -272,8 +272,8 @@ end
 local MinRobux = 1
 local MaxRobux = 1
 local RobuxModes = {
-    0,
-    --10,
+    --0,
+    10,
 }
 local GamesDoable = {
     "TicTacToe"
@@ -358,6 +358,10 @@ function MakeGame()
     local PossibleAvailableGamepasses = listPlayerGamepasses()
 
     print(#PossibleAvailableGamepasses)
+
+    if #PossibleAvailableGamepasses == 0 then
+        return nil
+    end
 
     local AvailableProduct = PossibleAvailableGamepasses[math.random(1, #PossibleAvailableGamepasses)]
     
