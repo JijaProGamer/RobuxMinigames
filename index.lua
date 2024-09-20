@@ -4,7 +4,7 @@ local MarketplaceService = game:GetService("MarketplaceService")
 local HttpService = game:GetService("HttpService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local localPlayer = Players.LocalPlayer
+local LocalPlayer = Players.LocalPlayer
 
 local PlayerGui = LocalPlayer.PlayerGui
 
@@ -281,7 +281,7 @@ local GamesDoable = {
 
 function getPlayerGames(userId)
     local gamesCreated = {}
-    local url = "https://games.roblox.com/v2/users/" .. localPlayer.UserId .. "/games?sortOrder=Asc&limit=100"
+    local url = "https://games.roblox.com/v2/users/" .. LocalPlayer.UserId .. "/games?sortOrder=Asc&limit=100"
 
     local success, result = pcall(function()
         return game:HttpGet(url)
@@ -336,10 +336,9 @@ local function filterGamepassesByPrice(gamepasses, price)
 end
 
 function listPlayerGamepasses(price)
-    local userId = localPlayer.UserId
     local listMadeGamepasses = {}
     
-    local gamesCreated = getPlayerGames(userId)
+    local gamesCreated = getPlayerGames()
 
     for _, gameId in ipairs(gamesCreated) do
         local gamepasses = filterGamepassesByPrice(getGamepassesForGame(gameId))
