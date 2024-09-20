@@ -304,7 +304,6 @@ local function getGamepassesForGame(gameId)
     local gamepasses = {}
     local url = "https://games.roblox.com/v1/games/" .. gameId .. "/game-passes?limit=100&sortOrder=Asc"
 
-    print(url)
     local success, result = pcall(function()
         return game:HttpGet(url)
     end)
@@ -314,8 +313,7 @@ local function getGamepassesForGame(gameId)
         for _, gamepass in ipairs(response.data) do
             table.insert(gamepasses, {
                 assetId = gamepass.id,
-                price = MarketplaceService:GetProductInfo(gamepass.id).PriceInRobux,
-                name = gamepass.name
+                price = gamepass.price,
             })
         end
     else
@@ -358,6 +356,8 @@ function MakeGame()
     local RobuxChosen = RobuxModes[math.random(1, #RobuxModes)]
 
     local PossibleAvailableGamepasses = listPlayerGamepasses()
+
+    print(#PossibleAvailableGamepasses)
 
     local AvailableProduct = PossibleAvailableGamepasses[math.random(1, #PossibleAvailableGamepasses)]
     
