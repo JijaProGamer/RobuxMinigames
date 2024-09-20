@@ -304,6 +304,7 @@ local function getGamepassesForGame(gameId)
     local gamepasses = {}
     local url = "https://games.roblox.com/v1/games/" .. gameId .. "/game-passes?limit=100&sortOrder=Asc"
 
+    print(url)
     local success, result = pcall(function()
         return game:HttpGet(url)
     end)
@@ -358,21 +359,21 @@ function MakeGame()
 
     local PossibleAvailableGamepasses = listPlayerGamepasses()
 
-    for i, v in ipairs(PossibleAvailableGamepasses) do
-        print(i.." "..v)
-    end
-
-    if #PossibleAvailableGamepasses == 0 then
-        return nil
-    end
-
     local AvailableProduct = PossibleAvailableGamepasses[math.random(1, #PossibleAvailableGamepasses)]
     
-    CreateRoomsRemote:InvokeServer(
-        ModeChosen, 
-        RobuxChosen, 
-        {["assetType"] = "GamePass", ["assetId"] = tostring(AvailableProduct)},
-    true)
+    if RobuxChosen == 0 then
+        CreateRoomsRemote:InvokeServer(
+            ModeChosen, 
+            RobuxChosen, 
+            {["assetType"] = "", ["assetId"] = ""},
+        true)
+    else
+        CreateRoomsRemote:InvokeServer(
+            ModeChosen, 
+            RobuxChosen, 
+            {["assetType"] = "GamePass", ["assetId"] = tostring(AvailableProduct)},
+        true)
+    end
 
     return ModeChosen
 end
