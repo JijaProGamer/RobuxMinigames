@@ -358,11 +358,15 @@ function MakeGame()
 
     local PossibleAvailableGamepasses = listPlayerGamepasses()
 
+    for i, v in ipairs(PossibleAvailableGamepasses) do
+        print(i.." "..v)
+    end
+
     if #PossibleAvailableGamepasses == 0 then
         return nil
     end
 
-    local AvailableProduct = PossibleAvailableGamepasses[math.random(1, #PossibleAvailableProducts)]
+    local AvailableProduct = PossibleAvailableGamepasses[math.random(1, #PossibleAvailableGamepasses)]
     
     CreateRoomsRemote:InvokeServer(
         ModeChosen, 
