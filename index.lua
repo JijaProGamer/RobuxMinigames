@@ -293,6 +293,7 @@ function getPlayerGames(userId)
             table.insert(gamesCreated, game.id)
         end
     else
+        warn(result)
         warn("Error fetching player games")
     end
     
