@@ -271,6 +271,7 @@ TicTacToe = {
 
 
 function HandleGame(ArenaWorkspace, GameName)
+    warn(GameName)
     if GameName == "RushTicTacToe" or
         GameName == "TicTacToe" then
         if not TicTacToe:isMyTurn(GameName) then
