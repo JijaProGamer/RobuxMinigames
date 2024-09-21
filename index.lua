@@ -386,14 +386,22 @@ function MakeGame()
         CreateRoomsRemote:InvokeServer(
             ModeChosen, 
             RobuxChosen, 
-            {["assetType"] = "", ["assetId"] = ""},
-        true)
+            {
+                ["assetType"] = "", 
+                ["assetId"] = ""
+            },
+            true
+        )
     else
         CreateRoomsRemote:InvokeServer(
             ModeChosen, 
             RobuxChosen, 
-            {["assetType"] = "GamePass", ["assetId"] = AvailableProduct},
-        true)
+            {
+                ["assetType"] = "GamePass", 
+                ["assetId"] = tostring(AvailableProduct)
+            },
+            true
+        )
     end
 
     return ModeChosen
@@ -474,7 +482,7 @@ end
 
 --MakeGame()
 
-local GameName = nil
+--[[local GameName = nil
 local Started = false
 local CreationStart = os.clock()
 local SetGameStart = false
@@ -518,9 +526,9 @@ while true do
             end
         end
     end
-end
+end]]
 
---[[while true do
+while true do
     task.wait(1)
 
     local ArenaWorkspace = FindLocalArena()
@@ -528,4 +536,4 @@ end
     if ArenaWorkspace then
         HandleGame(ArenaWorkspace, "Tic Tac Toe")
     end
-end]]
+end
