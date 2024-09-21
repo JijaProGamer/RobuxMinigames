@@ -271,8 +271,8 @@ TicTacToe = {
 
 
 function HandleGame(ArenaWorkspace, GameName)
-    if GameName == "Rush Tic Tac Toe" or
-        GameName == "Tic Tac Toe" then
+    if GameName == "RushTicTacToe" or
+        GameName == "TicTacToe" then
         if not TicTacToe:isMyTurn(GameName) then
             return
         end
@@ -487,15 +487,14 @@ local Started = false
 local CreationStart = os.clock()
 local SetGameStart = false
 local GameStart = os.clock()
+local JustEnded = false
 
 while true do
     task.wait(1)
 
-    print(1)
     local ArenaWorkspace = FindLocalArena()
 
     if ArenaWorkspace then
-        print(10)
         HandleGame(ArenaWorkspace, GameName)
         Started = false
 
@@ -504,9 +503,11 @@ while true do
             GameStart = os.clock()
         end
     else
-        print(20)
         if not Started then
-            print(30)
+            if SetGameStart then
+                task.wait(15)
+            end
+
             --local CurrentGameName = SearchForRoom()
 
             --if CurrentGameName then
@@ -516,18 +517,16 @@ while true do
                 CreationStart = os.clock()
                 GameName = MakeGame()
                 Started = true
-                GameStart = false
+                SetGameStart = false
             --end
         else
-            print(40)
             if (os.clock() - (CreationStart + MaxCreationTime)) >= 0 then
-                print(41)
                 task.wait(15)
                 ArenaWorkspace = FindLocalArena()
-                print(42)
 
                 if not ArenaWorkspace then
                     Started = false
+                    SetGameStart = false
                     DestroyGame()
                 end
             end
