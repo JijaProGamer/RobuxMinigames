@@ -482,7 +482,7 @@ end
 
 --MakeGame()
 
---[[local GameName = nil
+local GameName = nil
 local Started = false
 local CreationStart = os.clock()
 local SetGameStart = false
@@ -515,7 +515,8 @@ while true do
                 GameStart = false
             --end
         else
-            if os.clock() > CreationStart + MaxCreationTime then
+            warn(os.clock() - (CreationStart + MaxCreationTime))
+            if os.clock() > (CreationStart + MaxCreationTime) then
                 task.wait(15)
                 ArenaWorkspace = FindLocalArena()
 
@@ -526,9 +527,9 @@ while true do
             end
         end
     end
-end]]
+end
 
-while true do
+--[[while true do
     task.wait(1)
 
     local ArenaWorkspace = FindLocalArena()
@@ -536,4 +537,4 @@ while true do
     if ArenaWorkspace then
         HandleGame(ArenaWorkspace, "Tic Tac Toe")
     end
-end
+end]]
