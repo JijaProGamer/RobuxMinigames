@@ -89,7 +89,7 @@ TicTacToe = {
         local board =  {"_", "_", "_", "_", "_", "_", "_", "_", "_"}
         local boardUI
     
-        if mode == "Tic Tac Toe" then
+        if mode == "TicTacToe" then
             boardUI = PlayerGui.TicTacToe
         else 
             boardUI = PlayerGui.RushTicTacToe
@@ -125,7 +125,7 @@ TicTacToe = {
     isMyTurn = function(self, mode)
         local boardUI
     
-        if mode == "Tic Tac Toe" then
+        if mode == "TicTacToe" then
             boardUI = PlayerGui.TicTacToe
         else 
             boardUI = PlayerGui.RushTicTacToe
@@ -138,7 +138,7 @@ TicTacToe = {
     doMove = function(self, mode, move)
         local boardUI
     
-        if mode == "Tic Tac Toe" then
+        if mode == "TicTacToe" then
             boardUI = PlayerGui.TicTacToe
         else 
             boardUI = PlayerGui.RushTicTacToe
@@ -271,7 +271,6 @@ TicTacToe = {
 
 
 function HandleGame(ArenaWorkspace, GameName)
-    warn(GameName)
     if GameName == "RushTicTacToe" or
         GameName == "TicTacToe" then
         if not TicTacToe:isMyTurn(GameName) then
