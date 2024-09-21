@@ -515,8 +515,7 @@ while true do
                 GameStart = false
             --end
         else
-            warn(os.clock() - (CreationStart + MaxCreationTime))
-            if os.clock() > (CreationStart + MaxCreationTime) then
+            if (os.clock() - (CreationStart + MaxCreationTime)) >= 0 then
                 task.wait(15)
                 ArenaWorkspace = FindLocalArena()
 
