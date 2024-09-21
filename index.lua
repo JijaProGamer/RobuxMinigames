@@ -374,14 +374,6 @@ function MakeGame()
 
     local RobuxChosen = RobuxModes[math.random(1, #RobuxModes)]
 
-    local PossibleAvailableGamepasses = filterGamepassesByPrice(RobuxChosen)
-
-    if #PossibleAvailableGamepasses == 0 then
-        return nil
-    end
-
-    local AvailableProduct = PossibleAvailableGamepasses[math.random(1, #PossibleAvailableGamepasses)]
-    
     if RobuxChosen == 0 then
         CreateRoomsRemote:InvokeServer(
             ModeChosen, 
@@ -393,6 +385,14 @@ function MakeGame()
             true
         )
     else
+        local PossibleAvailableGamepasses = filterGamepassesByPrice(RobuxChosen)
+
+        if #PossibleAvailableGamepasses == 0 then
+            return nil
+        end
+    
+        local AvailableProduct = PossibleAvailableGamepasses[math.random(1, #PossibleAvailableGamepasses)]
+        
         CreateRoomsRemote:InvokeServer(
             ModeChosen, 
             RobuxChosen, 
