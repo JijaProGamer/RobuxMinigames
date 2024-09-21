@@ -491,9 +491,11 @@ local GameStart = os.clock()
 while true do
     task.wait(1)
 
+    print(1)
     local ArenaWorkspace = FindLocalArena()
 
     if ArenaWorkspace then
+        print(10)
         HandleGame(ArenaWorkspace, GameName)
         Started = false
 
@@ -502,7 +504,9 @@ while true do
             GameStart = os.clock()
         end
     else
+        print(20)
         if not Started then
+            print(30)
             --local CurrentGameName = SearchForRoom()
 
             --if CurrentGameName then
@@ -515,9 +519,12 @@ while true do
                 GameStart = false
             --end
         else
+            print(40)
             if (os.clock() - (CreationStart + MaxCreationTime)) >= 0 then
+                print(41)
                 task.wait(15)
                 ArenaWorkspace = FindLocalArena()
+                print(42)
 
                 if not ArenaWorkspace then
                     Started = false
