@@ -287,7 +287,8 @@ local MinRobux = 1
 local MaxRobux = 1
 local RobuxModes = {
     --0,
-    10,
+    --10,
+    100
 }
 local MaxCreationTime = 120
 local GamesDoable = {
@@ -482,7 +483,7 @@ end
 
 --MakeGame()
 
-local GameName = nil
+--[[local GameName = nil
 local Started = false
 local CreationStart = os.clock()
 local SetGameStart = false
@@ -532,14 +533,14 @@ while true do
             end
         end
     end
-end
+end]]
 
---[[while true do
+while true do
     task.wait(1)
 
     local ArenaWorkspace = FindLocalArena()
 
     if ArenaWorkspace then
-        HandleGame(ArenaWorkspace, "Tic Tac Toe")
+        HandleGame(ArenaWorkspace, "TicTacToe")
     end
-end]]
+end
