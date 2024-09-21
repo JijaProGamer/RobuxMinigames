@@ -286,8 +286,8 @@ end
 local MinRobux = 1
 local MaxRobux = 1
 local RobuxModes = {
-    --0,
-    10,
+    0,
+    --10,
 }
 local MaxCreationTime = 120
 local GamesDoable = {
