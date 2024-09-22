@@ -56,12 +56,17 @@ function FindLocalArena()
 
         if AreaTemplate then
             local Red = AreaTemplate:FindFirstChild("Red")
-            if not Red or not Red:FindFirstChild("Character") or not AreaTemplate.Red.Character:FindFirstChild("Nametag") then
+            if not Red or not Red:FindFirstChild("Character") or not Red.Character:FindFirstChild("Nametag") then
+                continue
+            end
+
+            local Blue = AreaTemplate:FindFirstChild("Red")
+            if not Blue or not Blue:FindFirstChild("Character") or not Blue.Character:FindFirstChild("Nametag") then
                 continue
             end
 
             local Red  = Red.Character.Nametag.Frame:FindFirstChild("Username")
-            local Blue = AreaTemplate.Blue.Character.Nametag.Frame:FindFirstChild("Username")
+            local Blue = Blue.Character.Nametag.Frame:FindFirstChild("Username")
 
             if not Red or not Blue then
                 continue
