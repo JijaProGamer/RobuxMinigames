@@ -19,7 +19,7 @@ local TeleportService = game:GetService("TeleportService")
 
 --end
 
-if not (game.placeId = 9476339275 or game.placeId = 12529881925) then
+if not (game.placeId == 9476339275 or game.placeId == 12529881925) then
     return
 end
 
