@@ -306,9 +306,9 @@ end
 local MinRobux = 1
 local MaxRobux = 1
 local RobuxModes = {
-    0,
-    --10,
-    --20,
+    --0,
+    10,
+    20,
     --100
 }
 local MaxMatchesDeleted = 5
@@ -574,7 +574,6 @@ while true do
 
     local ArenaWorkspace = FindLocalArena()
 
-    warn(tostring(WaitingForOpponent2.Visible).." "..tostring(WaitingForOpponent3.Visible))
     if WaitingForOpponent2.Visible or WaitingForOpponent3.Visible then
         ShouldRejoin = false
         continue
@@ -585,10 +584,10 @@ while true do
         Started = false
         ShouldRejoin = true
 
+        MatchesDeleted = 0
         if not SetGameStart then
             SetGameStart = true
             GameStart = os.clock()
-            MatchesDeleted = 0
         end
     else
         if not ShouldRejoin then
@@ -598,7 +597,6 @@ while true do
         if not Started then
             if MatchesDeleted >= MaxMatchesDeleted and ShouldRejoin then
                 ServerHop()
-                task.wait(15)
 
                 return
             end
