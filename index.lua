@@ -500,8 +500,6 @@ function ServerHop()
     for _, value in ipairs(premium_servers.data) do table.insert(servers, value) end
     for _, value in ipairs(free_servers.data) do table.insert(servers, value) end
 
-    printTable(servers)
-
     local totalPlayers = 0
     local serverList = {}
 
@@ -511,10 +509,8 @@ function ServerHop()
             totalPlayers = totalPlayers + server.playing
         end
     end
-
-    printTable(serverList)
     
-    --[[if #serverList == 0 then return end
+    if #serverList == 0 then return end
 
     local randomWeight = math.random() * totalPlayers
     local cumulativeWeight = 0
@@ -530,7 +526,7 @@ function ServerHop()
 
     if selectedServer then
         TeleportService:TeleportToPlaceInstance(placeId, selectedServer.id, Players.LocalPlayer)
-    end]]
+    end
 end
 
 ServerHop()
