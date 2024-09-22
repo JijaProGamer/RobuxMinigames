@@ -605,18 +605,22 @@ while true do
                 task.wait(15)
             end
 
-            --local CurrentGameName = SearchForRoom()
+            ArenaWorkspace = FindLocalArena()
 
-            --if CurrentGameName then
-            --    GameName = CurrentGameName
-            --    Started = true
-            --else 
-                CreationStart = os.clock()
-                GameName = MakeGame()
-                Started = true
-                SetGameStart = false
-                ShouldRejoin = true
-            --end
+            if not ArenaWorkspace and not WaitingForOpponent2.Visible and not WaitingForOpponent3.Visible then
+                --local CurrentGameName = SearchForRoom()
+
+                --if CurrentGameName then
+                --    GameName = CurrentGameName
+                --    Started = true
+                --else 
+                    CreationStart = os.clock()
+                    GameName = MakeGame()
+                    Started = true
+                    SetGameStart = false
+                    ShouldRejoin = true
+                --end
+            end
         else
             if (os.clock() - (CreationStart + MaxCreationTime)) >= 0 then
                 task.wait(15)
