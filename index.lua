@@ -20,7 +20,6 @@ local TeleportService = game:GetService("TeleportService")
 --end
 
 if not game.placeId == 9476339275 and not game.placeId == 12529881925 then
-    warn("ok")
     return
 end
 
@@ -558,9 +557,7 @@ function ServerHop()
     end
 end
 
---ServerHop()
-
---[[local GameName = nil
+local GameName = nil
 local Started = false
 local CreationStart = os.clock()
 local SetGameStart = false
