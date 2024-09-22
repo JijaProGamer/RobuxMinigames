@@ -306,9 +306,9 @@ end
 local MinRobux = 1
 local MaxRobux = 1
 local RobuxModes = {
-    --0,
-    10,
-    20,
+    0,
+    --10,
+    --20,
     --100
 }
 local MaxMatchesDeleted = 5
@@ -574,6 +574,7 @@ while true do
 
     local ArenaWorkspace = FindLocalArena()
 
+    warn(WaitingForOpponent2.Visible.." "..WaitingForOpponent3.Visible)
     if WaitingForOpponent2.Visible or WaitingForOpponent3.Visible then
         ShouldRejoin = false
         continue
