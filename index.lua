@@ -313,7 +313,7 @@ local RobuxModes = {
     --100
 }
 local MaxMatchesDeleted = 5
-local MaxCreationTime = 15
+local MaxCreationTime = 120
 local GamesDoable = {
     "TicTacToe"
 }
