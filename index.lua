@@ -574,7 +574,7 @@ while true do
 
     local ArenaWorkspace = FindLocalArena()
 
-    warn(WaitingForOpponent2.Visible.." "..WaitingForOpponent3.Visible)
+    warn(tostring(WaitingForOpponent2.Visible).." "..tostring(WaitingForOpponent3.Visible))
     if WaitingForOpponent2.Visible or WaitingForOpponent3.Visible then
         ShouldRejoin = false
         continue
