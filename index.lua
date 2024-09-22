@@ -307,9 +307,9 @@ end
 local MinRobux = 1
 local MaxRobux = 1
 local RobuxModes = {
-    0,
-    --10,
-    --20,
+    --0,
+    10,
+    20,
     --100
 }
 local MaxMatchesDeleted = 5
@@ -561,7 +561,7 @@ function ServerHop()
     end
 end
 
-local GameName = nil
+--[[local GameName = nil
 local Started = false
 local CreationStart = os.clock()
 local SetGameStart = false
@@ -575,11 +575,6 @@ while true do
 
     local ArenaWorkspace = FindLocalArena()
 
-    if (WaitingForOpponent2.Visible or WaitingForOpponent3.Visible) and WaitingForOpponent.Visible then
-        ShouldRejoin = false
-        continue
-    end
-
     if ArenaWorkspace then
         HandleGame(ArenaWorkspace, GameName)
         Started = false
@@ -591,7 +586,11 @@ while true do
             MatchesDeleted = 0
         end
     else
-        print(1)
+        if (WaitingForOpponent2.Visible or WaitingForOpponent3.Visible) and WaitingForOpponent.Visible then
+            ShouldRejoin = false
+            continue
+        end
+
         if not Started then
             if MatchesDeleted >= MaxMatchesDeleted and ShouldRejoin then
                 ServerHop()
@@ -620,7 +619,6 @@ while true do
                 --end
             end
         else
-            print(2)
             if (os.clock() - (CreationStart + MaxCreationTime)) >= 0 then
                 DestroyGame()
                 task.wait(15)
@@ -635,9 +633,9 @@ while true do
             end
         end
     end
-end
+end]]
 
---[[while true do
+while true do
     task.wait(1)
 
     local ArenaWorkspace = FindLocalArena()
@@ -645,4 +643,4 @@ end
     if ArenaWorkspace then
         HandleGame(ArenaWorkspace, "TicTacToe")
     end
-end]]
+end
