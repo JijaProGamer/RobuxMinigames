@@ -311,7 +311,7 @@ local RobuxModes = {
     --100
 }
 local MaxMatchesDeleted = 5
-local MaxCreationTime = 120
+local MaxCreationTime = 180
 local GamesDoable = {
     "TicTacToe"
 }
@@ -617,7 +617,7 @@ while true do
                 task.wait(15)
                 ArenaWorkspace = FindLocalArena()
 
-                if not ArenaWorkspace then
+                if not ArenaWorkspace and not WaitingForOpponent.Visible then
                     Started = false
                     SetGameStart = false
                     ShouldRejoin = true
