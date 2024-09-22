@@ -43,6 +43,8 @@ local RoomsFrame = RoomsParentFrame.PlayerList.Objects
 local CreateRoomsRemote = ReplicatedStorage.RemoteCalls.GameSpecific.Tickets.CreateRoom
 local DestroyRoomsRemote = ReplicatedStorage.RemoteCalls.GameSpecific.Tickets.DestroyRoom
 
+local WaitingForOpponent = PlayerGui.WaitingForOpponent["Bottom Middle"].WaitingForOpponent.Background.Step2
+
 function PressButton(button)
     for _, connection in pairs(getconnections(button.MouseButton1Click)) do
         connection:Fire()
@@ -569,6 +571,10 @@ while true do
     task.wait(1)
 
     local ArenaWorkspace = FindLocalArena()
+
+    if WaitingForOpponent.Visible then
+        continue
+    end
 
     if ArenaWorkspace then
         HandleGame(ArenaWorkspace, GameName)
