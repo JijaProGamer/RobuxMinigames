@@ -530,7 +530,7 @@ function ServerHop()
 
     if selectedServer then
         TeleportService:TeleportToPlaceInstance(placeId, selectedServer.id, Players.LocalPlayer)
-    end]
+    end]]
 end
 
 ServerHop()
