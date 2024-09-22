@@ -482,8 +482,8 @@ function SearchForRoom()
     return nil
 end
     
-function GetServers(cursor)
-    local queryUrl = "https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Desc&limit=100"
+function GetServers(PlaceId, cursor)
+    local queryUrl = "https://games.roblox.com/v1/games/"..PlaceId.."/servers/Public?sortOrder=Desc&limit=100"
     if cursor then
         queryUrl = queryUrl .. "&cursor=" .. cursor
     end
@@ -493,40 +493,44 @@ function GetServers(cursor)
 end
 
 function ServerHop()
-    local servers = GetServers()
+    local premium_servers = GetServers(12529881925)
+    local free_servers    = GetServers(9476339275)
+
+    local servers = {}
+    for _, value in ipairs(premium_servers.data) do table.insert(servers, value) end
+    for _, value in ipairs(free_servers.data) do table.insert(servers, value) end
+
     printTable(servers)
 
-    if servers and servers.data then
-        local totalPlayers = 0
-        local serverList = {}
+    local totalPlayers = 0
+    local serverList = {}
 
-        for _, server in ipairs(servers.data) do
-            if server.id ~= game.JobId then
-                table.insert(serverList, server)
-                totalPlayers = totalPlayers + server.playing
-            end
-        end
-
-        printTable(serverList)
-        
-        if #serverList == 0 then return end
-
-        local randomWeight = math.random() * totalPlayers
-        local cumulativeWeight = 0
-        local selectedServer
-
-        for _, server in ipairs(serverList) do
-            cumulativeWeight = cumulativeWeight + server.playing
-            if cumulativeWeight >= randomWeight then
-                selectedServer = server
-                break
-            end
-        end
-
-        if selectedServer then
-            TeleportService:TeleportToPlaceInstance(placeId, selectedServer.id, Players.LocalPlayer)
+    for _, server in ipairs(servers) do
+        if server.id ~= game.JobId then
+            table.insert(serverList, server)
+            totalPlayers = totalPlayers + server.playing
         end
     end
+
+    printTable(serverList)
+    
+    --[[if #serverList == 0 then return end
+
+    local randomWeight = math.random() * totalPlayers
+    local cumulativeWeight = 0
+    local selectedServer
+
+    for _, server in ipairs(serverList) do
+        cumulativeWeight = cumulativeWeight + server.playing
+        if cumulativeWeight >= randomWeight then
+            selectedServer = server
+            break
+        end
+    end
+
+    if selectedServer then
+        TeleportService:TeleportToPlaceInstance(placeId, selectedServer.id, Players.LocalPlayer)
+    end]
 end
 
 ServerHop()
