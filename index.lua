@@ -491,7 +491,7 @@ function ServerHop()
             queryUrl = queryUrl .. "&cursor=" .. cursor
         end
         
-        local response = HttpService:GetAsync(queryUrl)
+        local response = game:HttpGet(queryUrl)
         return HttpService:JSONDecode(response)
     end
     
