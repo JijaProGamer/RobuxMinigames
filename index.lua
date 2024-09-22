@@ -573,6 +573,7 @@ while true do
     local ArenaWorkspace = FindLocalArena()
 
     if WaitingForOpponent.Visible then
+        MatchesDeleted = 0
         continue
     end
 
