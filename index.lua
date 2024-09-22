@@ -624,7 +624,7 @@ while true do
                 task.wait(15)
                 ArenaWorkspace = FindLocalArena()
 
-                if not ArenaWorkspace and ((not WaitingForOpponent2.Visible and not WaitingForOpponent3.Visible) and WaitingForOpponent.Visible) then
+                if not ArenaWorkspace and ((not WaitingForOpponent2.Visible and not WaitingForOpponent3.Visible) or not WaitingForOpponent.Visible) then
                     Started = false
                     SetGameStart = false
                     ShouldRejoin = true
