@@ -43,7 +43,8 @@ local RoomsFrame = RoomsParentFrame.PlayerList.Objects
 local CreateRoomsRemote = ReplicatedStorage.RemoteCalls.GameSpecific.Tickets.CreateRoom
 local DestroyRoomsRemote = ReplicatedStorage.RemoteCalls.GameSpecific.Tickets.DestroyRoom
 
-local WaitingForOpponent = PlayerGui.WaitingForOpponent["Bottom Middle"].WaitingForOpponent.Background.Step2
+local WaitingForOpponent2 = PlayerGui.WaitingForOpponent["Bottom Middle"].WaitingForOpponent.Background.Step2
+local WaitingForOpponent3 = PlayerGui.WaitingForOpponent["Bottom Middle"].WaitingForOpponent.Background.Step3
 
 function PressButton(button)
     for _, connection in pairs(getconnections(button.MouseButton1Click)) do
@@ -573,7 +574,7 @@ while true do
 
     local ArenaWorkspace = FindLocalArena()
 
-    if WaitingForOpponent.Visible then
+    if WaitingForOpponent2.Visible or WaitingForOpponent3.Visible then
         ShouldRejoin = false
         continue
     end
@@ -581,6 +582,7 @@ while true do
     if ArenaWorkspace then
         HandleGame(ArenaWorkspace, GameName)
         Started = false
+        ShouldRejoin = true
 
         if not SetGameStart then
             SetGameStart = true
@@ -588,6 +590,10 @@ while true do
             MatchesDeleted = 0
         end
     else
+        if not ShouldRejoin then
+            continue
+        end
+
         if not Started then
             if MatchesDeleted >= MaxMatchesDeleted and ShouldRejoin then
                 ServerHop()
@@ -617,7 +623,7 @@ while true do
                 task.wait(15)
                 ArenaWorkspace = FindLocalArena()
 
-                if not ArenaWorkspace and not WaitingForOpponent.Visible then
+                if not ArenaWorkspace and not WaitingForOpponent2.Visible and not WaitingForOpponent3.Visible then
                     Started = false
                     SetGameStart = false
                     ShouldRejoin = true
