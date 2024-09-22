@@ -566,6 +566,7 @@ local SetGameStart = false
 local GameStart = os.clock()
 local JustEnded = false
 local MatchesDeleted = 0
+local ShouldRejoin = true
 
 while true do
     task.wait(1)
@@ -573,7 +574,7 @@ while true do
     local ArenaWorkspace = FindLocalArena()
 
     if WaitingForOpponent.Visible then
-        MatchesDeleted = 0
+        ShouldRejoin = false
         continue
     end
 
@@ -588,7 +589,7 @@ while true do
         end
     else
         if not Started then
-            if MatchesDeleted >= MaxMatchesDeleted then
+            if MatchesDeleted >= MaxMatchesDeleted and ShouldRejoin then
                 ServerHop()
                 task.wait(15)
 
@@ -609,6 +610,7 @@ while true do
                 GameName = MakeGame()
                 Started = true
                 SetGameStart = false
+                ShouldRejoin = true
             --end
         else
             if (os.clock() - (CreationStart + MaxCreationTime)) >= 0 then
@@ -618,6 +620,7 @@ while true do
                 if not ArenaWorkspace then
                     Started = false
                     SetGameStart = false
+                    ShouldRejoin = true
                     MatchesDeleted = MatchesDeleted + 1
                     DestroyGame()
                 end
