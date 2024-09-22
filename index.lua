@@ -12,6 +12,10 @@ function printTable(tbl, indent)
     end
 end
 
+local TeleportService = game:GetService("TeleportService")
+local teleportData = TeleportService:GetLocalPlayerTeleportData()
+warn(teleportData)
+
 local Players = game:GetService("Players")
 local TeleportService = game:GetService("TeleportService")
 local MarketplaceService = game:GetService("MarketplaceService")
@@ -536,11 +540,19 @@ function ServerHop()
     end
 
     if selectedServer then
-        TeleportService:TeleportToPlaceInstance(selectedServer.placeId, selectedServer.id, LocalPlayer)
+        TeleportService:TeleportToPlaceInstance(
+            selectedServer.placeId, 
+            selectedServer.id, 
+            LocalPlayer, 
+            nil,
+            "ServerHop"
+        )
     end
 end
 
-local GameName = nil
+ServerHop()
+
+--[[local GameName = nil
 local Started = false
 local CreationStart = os.clock()
 local SetGameStart = false
