@@ -518,7 +518,7 @@ function ServerHop()
     
     if #serverList == 0 then return end
 
-    local randomWeight = math.random() * totalPlayers
+    local randomWeight = math.sqrt(math.random()) * totalPlayers
     local cumulativeWeight = 0
     local selectedServer
 
