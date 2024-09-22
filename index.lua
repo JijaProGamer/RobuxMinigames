@@ -290,7 +290,7 @@ local RobuxModes = {
     --0,
     10,
     20,
-    100
+    --100
 }
 local MaxMatchesDeleted = 3
 local MaxCreationTime = 120
@@ -535,9 +535,7 @@ function ServerHop()
     end
 end
 
-ServerHop()
-
---[[local GameName = nil
+local GameName = nil
 local Started = false
 local CreationStart = os.clock()
 local SetGameStart = false
@@ -597,7 +595,7 @@ while true do
             end
         end
     end
-end]]
+end
 
 --[[while true do
     task.wait(1)
