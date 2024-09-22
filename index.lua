@@ -270,6 +270,20 @@ TicTacToe = {
     end,
 
     bestMove = function(self, board, playerSymbol)
+        local isBoardEmpty = true
+
+        for i = 1, 9 do
+            if board[i] ~= "_" then
+                isBoardEmpty = false
+                break;
+            end
+        end
+
+        if isBoardEmpty then
+            local bestStartPlaces = {1, 3, 5, 7, 9}
+            return bestStartPlaces[math.random(1, #bestStartPlaces)]
+        end
+
         local opponentSymbol = playerSymbol == "X" and "O" or "X"
         local bestScore = -math.huge
         local bestMove = -1
