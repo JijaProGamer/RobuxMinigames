@@ -605,7 +605,7 @@ while true do
 
             ArenaWorkspace = FindLocalArena()
 
-            if not ArenaWorkspace and not WaitingForOpponent2.Visible and not WaitingForOpponent3.Visible then
+            if not ArenaWorkspace and ((not WaitingForOpponent2.Visible and not WaitingForOpponent3.Visible) or not WaitingForOpponent.Visible) then
                 --local CurrentGameName = SearchForRoom()
 
                 --if CurrentGameName then
