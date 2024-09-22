@@ -584,16 +584,12 @@ while true do
         Started = false
         ShouldRejoin = true
 
-        MatchesDeleted = 0
         if not SetGameStart then
             SetGameStart = true
             GameStart = os.clock()
+            MatchesDeleted = 0
         end
     else
-        if not ShouldRejoin then
-            continue
-        end
-
         if not Started then
             if MatchesDeleted >= MaxMatchesDeleted and ShouldRejoin then
                 ServerHop()
