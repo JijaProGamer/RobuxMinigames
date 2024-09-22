@@ -284,6 +284,8 @@ TicTacToe = {
             return bestStartPlaces[math.random(1, #bestStartPlaces)]
         end
 
+
+
         local opponentSymbol = playerSymbol == "X" and "O" or "X"
         local bestScore = -math.huge
         local bestMove = -1
@@ -321,9 +323,9 @@ end
 local MinRobux = 1
 local MaxRobux = 1
 local RobuxModes = {
-    0,
-    --10,
-    --20,
+    --0,
+    10,
+    20,
     --100
 }
 local MaxMatchesDeleted = 5
