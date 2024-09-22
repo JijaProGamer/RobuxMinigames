@@ -497,8 +497,14 @@ function ServerHop()
     local free_servers    = GetServers(9476339275)
 
     local servers = {}
-    for _, value in ipairs(premium_servers.data) do table.insert(servers, value) end
-    for _, value in ipairs(free_servers.data) do table.insert(servers, value) end
+    for _, value in ipairs(premium_servers.data) do 
+        value.placeId = 12529881925
+        table.insert(servers, value) 
+    end
+    for _, value in ipairs(free_servers.data) do
+        value.placeId = 9476339275
+        table.insert(servers, value) 
+    end
 
     local totalPlayers = 0
     local serverList = {}
