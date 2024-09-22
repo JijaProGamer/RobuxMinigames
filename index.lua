@@ -507,6 +507,8 @@ function ServerHop()
                 totalPlayers = totalPlayers + server.playing
             end
         end
+
+        printTable(serverList)
         
         if #serverList == 0 then return end
 
