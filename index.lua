@@ -501,18 +501,15 @@ function ServerHop()
         local totalPlayers = 0
         local serverList = {}
 
-        -- Accumulate all servers and their player counts
         for _, server in ipairs(servers.data) do
-            if server.id ~= game.JobId then -- Skip the current server
+            if server.id ~= game.JobId then
                 table.insert(serverList, server)
                 totalPlayers = totalPlayers + server.playing
             end
         end
         
-        -- If no servers found, do nothing
         if #serverList == 0 then return end
 
-        -- Select a random server, weighted by player count
         local randomWeight = math.random() * totalPlayers
         local cumulativeWeight = 0
         local selectedServer
@@ -525,7 +522,6 @@ function ServerHop()
             end
         end
 
-        -- If a valid server was found, teleport the player
         if selectedServer then
             TeleportService:TeleportToPlaceInstance(placeId, selectedServer.id, Players.LocalPlayer)
         end
