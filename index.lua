@@ -531,7 +531,7 @@ function ServerHop()
     end
 
     if selectedServer then
-        TeleportService:TeleportToPlaceInstance(placeId, selectedServer.id, Players.LocalPlayer)
+        TeleportService:TeleportToPlaceInstance(selectedServer.placeId, selectedServer.id, LocalPlayer)
     end
 end
 
