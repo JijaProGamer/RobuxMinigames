@@ -13,6 +13,7 @@ function printTable(tbl, indent)
 end
 
 local Players = game:GetService("Players")
+local TeleportService = game:GetService("TeleportService")
 local MarketplaceService = game:GetService("MarketplaceService")
 local HttpService = game:GetService("HttpService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -288,7 +289,8 @@ local MaxRobux = 1
 local RobuxModes = {
     --0,
     10,
-    --100
+    20,
+    100
 }
 local MaxMatchesDeleted = 3
 local MaxCreationTime = 120
@@ -480,7 +482,57 @@ function SearchForRoom()
     return nil
 end
 
+function ServerHop()    
+    local url = "https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Desc&limit=100"
+    
+    local function getServers(cursor)
+        local queryUrl = url
+        if cursor then
+            queryUrl = queryUrl .. "&cursor=" .. cursor
+        end
+        
+        local response = HttpService:GetAsync(queryUrl)
+        return HttpService:JSONDecode(response)
+    end
+    
+    local servers = getServers()
 
+    if servers and servers.data then
+        local totalPlayers = 0
+        local serverList = {}
+
+        -- Accumulate all servers and their player counts
+        for _, server in ipairs(servers.data) do
+            if server.id ~= game.JobId then -- Skip the current server
+                table.insert(serverList, server)
+                totalPlayers = totalPlayers + server.playing
+            end
+        end
+        
+        -- If no servers found, do nothing
+        if #serverList == 0 then return end
+
+        -- Select a random server, weighted by player count
+        local randomWeight = math.random() * totalPlayers
+        local cumulativeWeight = 0
+        local selectedServer
+
+        for _, server in ipairs(serverList) do
+            cumulativeWeight = cumulativeWeight + server.playing
+            if cumulativeWeight >= randomWeight then
+                selectedServer = server
+                break
+            end
+        end
+
+        -- If a valid server was found, teleport the player
+        if selectedServer then
+            TeleportService:TeleportToPlaceInstance(placeId, selectedServer.id, Players.LocalPlayer)
+        end
+    end
+end
+
+ServerHop()
 
 --[[local GameName = nil
 local Started = false
@@ -543,7 +595,7 @@ while true do
     end
 end]]
 
-while true do
+--[[while true do
     task.wait(1)
 
     local ArenaWorkspace = FindLocalArena()
@@ -551,4 +603,4 @@ while true do
     if ArenaWorkspace then
         HandleGame(ArenaWorkspace, "TicTacToe")
     end
-end
+end]]
