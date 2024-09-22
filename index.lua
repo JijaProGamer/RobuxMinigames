@@ -556,7 +556,8 @@ while true do
     else
         if not Started then
             if MatchesDeleted >= MaxMatchesDeleted then
-                
+                ServerHop()
+                task.wait(15)
 
                 return
             end
