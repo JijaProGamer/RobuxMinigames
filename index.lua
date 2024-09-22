@@ -13,8 +13,15 @@ function printTable(tbl, indent)
 end
 
 local TeleportService = game:GetService("TeleportService")
-local teleportData = TeleportService:GetLocalPlayerTeleportData()
-warn(teleportData)
+--local teleportData = TeleportService:GetLocalPlayerTeleportData()
+
+--if teleportData == "ServerHop"  then
+
+--end
+
+if not (game.placeId = 9476339275 or game.placeId = 12529881925) then
+    return
+end
 
 local Players = game:GetService("Players")
 local TeleportService = game:GetService("TeleportService")
@@ -550,7 +557,7 @@ function ServerHop()
     end
 end
 
-ServerHop()
+--ServerHop()
 
 --[[local GameName = nil
 local Started = false
