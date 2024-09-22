@@ -287,9 +287,10 @@ local MinRobux = 1
 local MaxRobux = 1
 local RobuxModes = {
     --0,
-    --10,
-    100
+    10,
+    --100
 }
+local MaxMatchesDeleted = 3
 local MaxCreationTime = 120
 local GamesDoable = {
     "TicTacToe"
@@ -481,12 +482,13 @@ end
 
 
 
-local GameName = nil
+--[[local GameName = nil
 local Started = false
 local CreationStart = os.clock()
 local SetGameStart = false
 local GameStart = os.clock()
 local JustEnded = false
+local MatchesDeleted = 0
 
 while true do
     task.wait(1)
@@ -500,9 +502,16 @@ while true do
         if not SetGameStart then
             SetGameStart = true
             GameStart = os.clock()
+            MatchesDeleted = 0
         end
     else
         if not Started then
+            if MatchesDeleted >= MaxMatchesDeleted then
+                
+
+                return
+            end
+
             if SetGameStart then
                 task.wait(15)
             end
@@ -526,14 +535,15 @@ while true do
                 if not ArenaWorkspace then
                     Started = false
                     SetGameStart = false
+                    MatchesDeleted = MatchesDeleted + 1
                     DestroyGame()
                 end
             end
         end
     end
-end
+end]]
 
---[[while true do
+while true do
     task.wait(1)
 
     local ArenaWorkspace = FindLocalArena()
@@ -541,4 +551,4 @@ end
     if ArenaWorkspace then
         HandleGame(ArenaWorkspace, "TicTacToe")
     end
-end]]
+end
