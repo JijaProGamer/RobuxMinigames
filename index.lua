@@ -481,21 +481,20 @@ function SearchForRoom()
 
     return nil
 end
-
-function ServerHop()    
-    local url = "https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Desc&limit=100"
     
-    local function getServers(cursor)
-        local queryUrl = url
-        if cursor then
-            queryUrl = queryUrl .. "&cursor=" .. cursor
-        end
-        
-        local response = game:HttpGet(queryUrl)
-        return HttpService:JSONDecode(response)
+function GetServers(cursor)
+    local queryUrl = "https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Desc&limit=100"
+    if cursor then
+        queryUrl = queryUrl .. "&cursor=" .. cursor
     end
     
-    local servers = getServers()
+    local response = game:HttpGet(queryUrl)
+    return HttpService:JSONDecode(response)
+end
+
+function ServerHop()
+    local servers = GetServers()
+    printTable(servers)
 
     if servers and servers.data then
         local totalPlayers = 0
