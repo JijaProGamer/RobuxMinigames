@@ -573,14 +573,19 @@ local ShouldRejoin = true
 while true do
     task.wait(1)
 
+    print(1)
     local ArenaWorkspace = FindLocalArena()
 
+    print(2)
     if (WaitingForOpponent2.Visible or WaitingForOpponent3.Visible) and WaitingForOpponent.Visible then
+        print(3)
         ShouldRejoin = false
         continue
     end
 
+    print(4)
     if ArenaWorkspace then
+        print(5)
         HandleGame(ArenaWorkspace, GameName)
         Started = false
         ShouldRejoin = true
@@ -591,7 +596,7 @@ while true do
             MatchesDeleted = 0
         end
     else
-
+        print(6)
         if not Started then
             if MatchesDeleted >= MaxMatchesDeleted and ShouldRejoin then
                 ServerHop()
