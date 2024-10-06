@@ -115,6 +115,10 @@ TicTacToe = {
         else 
             boardUI = PlayerGui.RushTicTacToe
         end
+
+        if not boardUI:FindFirstChild("Top Middle") then
+            return;
+        end
     
         local teamColor = boardUI["Top Middle"].RoundInfo
         if teamColor.TeamColorRed.Visible then
@@ -315,6 +319,8 @@ function HandleGame(ArenaWorkspace, GameName)
         end
 
         local board = TicTacToe:uiToBoard(ArenaWorkspace, GameName)
+        if not board then return end
+        
         local bestMove = TicTacToe:bestMove(board.board, board.teamColor)
         TicTacToe:doMove(GameName, bestMove)
     end
@@ -331,8 +337,8 @@ local RobuxModes = {
     --50,
     --100
 }
-local MaxMatchesDeleted = 4
-local MaxCreationTime = 60
+local MaxMatchesDeleted = 5
+local MaxCreationTime = 120
 local GamesDoable = {
     "TicTacToe"
 }
@@ -536,6 +542,7 @@ function ServerHop()
     local free_servers    = GetServers(9476339275)
 
     local servers = {}
+
     for _, value in ipairs(premium_servers.data) do 
         value.placeId = 12529881925
         table.insert(servers, value) 
@@ -545,23 +552,34 @@ function ServerHop()
         table.insert(servers, value) 
     end
 
-    local totalPlayers = 0
     local serverList = {}
-
     for _, server in ipairs(servers) do
         if server.id ~= game.JobId then
             table.insert(serverList, server)
-            totalPlayers = totalPlayers + server.playing
         end
     end
-    
+
     if #serverList == 0 then return end
 
-    local randomWeight = math.sqrt(math.random()) * totalPlayers
+    table.sort(serverList, function(a, b)
+        return a.playing > b.playing
+    end)
+
+    local topServers = {}
+    for i = 1, math.min(4, #serverList) do
+        table.insert(topServers, serverList[i])
+    end
+
+    local totalPlayers = 0
+    for _, server in ipairs(topServers) do
+        totalPlayers = totalPlayers + server.playing
+    end
+
+    local randomWeight = math.random() * totalPlayers
     local cumulativeWeight = 0
     local selectedServer
 
-    for _, server in ipairs(serverList) do
+    for _, server in ipairs(topServers) do
         cumulativeWeight = cumulativeWeight + server.playing
         if cumulativeWeight >= randomWeight then
             selectedServer = server
